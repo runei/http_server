@@ -1,0 +1,71 @@
+name: C++ CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler: [gcc, clang]
+        build_type: [Debug, Release]
+    env:
+      CXXFLAGS: "-Wall -Wextra -Werror -std=c++20"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake cppcheck valgrind clang-tidy
+
+      - name: Configure with CMake
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+
+      - name: Build with ${{ matrix.compiler }}
+        run: cmake --build build
+
+      - name: Run Unit Tests
+        run: ./build/tests/your_test_executable
+
+      - name: Run Cppcheck (Static Code Analysis)
+        run: cppcheck --enable=all --inconclusive --error-exitcode=1 --suppress=missingIncludeSystem .
+
+      - name: Run Clang-Tidy (Linting)
+        run: clang-tidy src/*.cpp -- -std=c++20
+
+      - name: Run Valgrind (Memory Leak Detection)
+        if: matrix.build_type == 'Debug'
+        run: valgrind --leak-check=full ./build/tests/your_test_executable
+
+      - name: Check Code Formatting with Clang-Format
+        run: |
+          clang-format --version
+          find ./src -name '*.cpp' -o -name '*.h' | xargs clang-format -style=file --dry-run -Werror
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: build/
+
+  # Optional: Security check using CodeQL analysis
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: cpp
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2

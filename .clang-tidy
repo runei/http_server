@@ -1,0 +1,42 @@
+---
+Checks: >
+  -*,
+  bugprone-*,
+  cert-*,
+  cppcoreguidelines-*,
+  clang-analyzer-*,
+  modernize-*,
+  performance-*,
+  readability-*,
+  hicpp-*
+
+WarningsAsErrors: "*" # Treat all warnings as errors
+HeaderFilterRegex: ".*" # Apply checks to all files
+AnalyzeTemporaryDtors: false # Disable destructor checks for temporaries
+CheckOptions:
+  - key: cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    value: false # Disable strict pointer decay check
+
+  - key: modernize-use-auto
+    value: true # Enforce use of 'auto'
+
+  - key: performance-move-const-arg
+    value: true # Prefer std::move over unnecessary copies
+
+  - key: readability-braces-around-statements
+    value: true # Add braces to single-line statements
+
+  - key: bugprone-exception-escape
+    value: true # Detect exceptions escaping destructors
+
+  - key: bugprone-undefined-memory-manipulation
+    value: true # Detect undefined memory manipulation
+
+  - key: clang-analyzer-cplusplus.NewDeleteLeaks
+    value: true # Check for memory leaks in new/delete
+
+  - key: modernize-loop-convert
+    value: true # Use range-based loops when applicable
+
+  - key: modernize-use-nullptr
+    value: true # Enforce use of 'nullptr' instead of 'NULL'

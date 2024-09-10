@@ -1,0 +1,50 @@
+BasedOnStyle: Google
+
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+
+ColumnLimit: 100
+BreakBeforeBraces: Allman
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+
+NamespaceIndentation: None
+
+PointerAlignment: Left
+SpaceBeforePointerQualifiers: false
+
+AlwaysBreakAfterReturnType: None
+SpaceBeforeParens: ControlStatements
+
+IncludeBlocks: Preserve
+IncludeCategories:
+  - Regex: '^<.*\.h>'
+    Priority: 1
+  - Regex: "^<.*>"
+    Priority: 2
+  - Regex: '^"'
+    Priority: 3
+
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+BreakConstructorInitializersBeforeComma: false
+
+SpaceBeforeCpp11BracedList: false
+SpaceAfterCStyleCast: true
+SpaceAfterTemplateKeyword: true
+AlignTrailingComments: true
+
+BraceWrapping:
+  AfterClass: true
+  AfterControlStatement: true
+  AfterEnum: true
+  AfterFunction: false
+  AfterNamespace: true
+  BeforeCatch: true
+  BeforeElse: true
+  IndentBraces: false
+
+SpacesInAngles: false
+SpaceBeforeRangeBasedForLoopColon: true
+
+IndentPPDirectives: AfterHash
