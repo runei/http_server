@@ -63,7 +63,7 @@ TEST (CalculatorTest, Divide)
     const double expected = 2.0;
 
     // Act
-    auto actual = calculator.multiply(a, b);
+    auto actual = calculator.divide(a, b);
 
     // Assert
     DOUBLES_EQUAL(expected, actual, 0.00001);

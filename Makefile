@@ -17,3 +17,7 @@ clean:
 	@echo "Cleaning build directory..."
 	@rm -rf $(CMAKE_BUILD_DIR)
 	@echo "Build directory cleaned"
+
+format:
+	@echo "Formating files"
+	@find src tests -name "CMakeLists.txt" -exec cmake-format -i {} \;
