@@ -21,3 +21,7 @@ clean:
 format:
 	@echo "Formating files"
 	@find src tests -name "CMakeLists.txt" -exec cmake-format -i {} \;
+
+cppcheck:
+	@cppcheck --enable=all -Iinclude --error-exitcode=1 --suppress=missingIncludeSystem --inconclusive src/
+#	@cppcheck --enable=all -Iinclude -I/usr/include -I/usr/include/CppUTest --suppress=*:*/usr/include/CppUTest/* --error-exitcode=1 --suppress=missingIncludeSystem --inconclusive src/ tests/

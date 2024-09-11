@@ -27,29 +27,26 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential cmake cppcheck valgrind clang-tidy cpputest
 
-      - name: Configure with CMake
-        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-
-      - name: Build with ${{ matrix.compiler }}
-        run: cmake --build build
+      - name: Build
+        run: make build
 
       - name: Run Unit Tests
         run: ./build/tests/TestCalculator
 
       - name: Run Cppcheck (Static Code Analysis)
-        run: cppcheck --enable=all --inconclusive --error-exitcode=1 --suppress=missingIncludeSystem .
+        run: make cppcheck
 
       - name: Run Clang-Tidy (Linting)
         run: clang-tidy src/*.cpp -- -std=c++20
 
       - name: Run Valgrind (Memory Leak Detection)
         if: matrix.build_type == 'Debug'
-        run: valgrind --leak-check=full ./build/tests/your_test_executable
+        run: valgrind --leak-check=full ./build/tests/TestCalculator
 
       - name: Check Code Formatting with Clang-Format
         run: |
           clang-format --version
-          find ./src -name '*.cpp' -o -name '*.h' | xargs clang-format -style=file --dry-run -Werror
+          find ./src -name '*.cpp' -o -name '*.hpp' | xargs clang-format -style=file --dry-run -Werror
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3

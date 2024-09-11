@@ -2,7 +2,7 @@
 FROM gcc:latest
 
 RUN apt-get update
-RUN apt-get install -y clang-format cmake cmake-format cpputest
+RUN apt-get install -y clang-format cmake cmake-format cpputest cppcheck
 
 # Set git global variables
 RUN git config --global user.email "lminvernizzi@gmail.com"
