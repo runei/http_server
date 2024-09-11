@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake cppcheck valgrind clang-tidy
+          sudo apt-get install -y build-essential cmake cppcheck valgrind clang-tidy cpputest
 
       - name: Configure with CMake
         run: cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
@@ -34,7 +34,7 @@ jobs:
         run: cmake --build build
 
       - name: Run Unit Tests
-        run: ./build/tests/your_test_executable
+        run: ./build/tests/TestCalculator
 
       - name: Run Cppcheck (Static Code Analysis)
         run: cppcheck --enable=all --inconclusive --error-exitcode=1 --suppress=missingIncludeSystem .

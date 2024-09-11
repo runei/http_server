@@ -1,28 +1,85 @@
 {
-  "line_width": 80,
-  "tab_size": 4,
-  "use_tabchars": false,
-  "indent_width": 4,
-  "continuation_indent_width": 4,
-  "indent_lists": false,
-  "always_wrap": [],
-  "max_subgroups_hwrap": 2,
-  "dangle_parens": false,
-  "max_prefix_chars": 10,
-  "max_lines_hwrap": 2,
-  "line_ending": "unix",
-  "keyword_case": "lower",
-  "command_case": "lower",
-  "always_wrap_if_args": [],
-  "ignore": "build/",
-  "disable": [],
-  "space_between_parens": false,
-  "separate_ctrl_name_with_space": false,
-  "separate_fn_name_with_space": false,
-  "dangle_align": "prefix",
-  "min_prefix_chars": 4,
-  "min_suffix_chars": 0,
-  "custom_wrap": [],
-  "autosort": false,
-  "enable_markup": false
+  "parse": {
+    "additional_commands": {
+      "find_library": {
+        "flags": [
+          "CMAKE_FIND_ROOT_PATH_BOTH",
+          "NO_CMAKE_ENVIRONMENT_PATH",
+          "NO_CMAKE_FIND_ROOT_PATH",
+          "NO_CMAKE_PATH",
+          "NO_CMKE_SYSTEM_PATH",
+          "NO_DEFAULT_PATH",
+          "NO_SYSTEM_ENVIRONMENT_PATH",
+          "ONLY_CMAKE_FIND_ROOT_PATH",
+          "REQUIRED"
+        ],
+        "kwargs": {
+          "DOC": "*",
+          "HINTS": "*",
+          "NAMES": "*",
+          "PATHS": "*",
+          "PATH_SUFFIXES": "*"
+        }
+      }
+    }
+  },
+  "format": {
+    "line_width": 80,
+    "tab_size": 4,
+    "use_tabchars": false,
+    "fractional_tab_policy": "use-space",
+    "max_subgroups_hwrap": 2,
+    "max_pargs_hwrap": 1,
+    "dangle_parens": true,
+    "dangle_align": "prefix",
+    "min_prefix_chars": 4,
+    "max_prefix_chars": 10,
+    "max_lines_hwrap": 1,
+    "line_ending": "unix",
+    "command_case": "canonical",
+    "keyword_case": "upper",
+    "always_wrap": [],
+    "autosort": false,
+    "enable_sort": false
+  },
+  "markup": {
+    "bullet_char": "*",
+    "enum_char": ".",
+    "first_comment_is_literal": false,
+    "literal_comment_pattern": null,
+    "fence_pattern": "^\\s*([`~]{3}[`~]*)(.*)$",
+    "ruler_pattern": "^\\s*[^\\w\\s]{3}.*[^\\w\\s]{3}$",
+    "explicit_trailing_pattern": "#<",
+    "hashruler_min_length": 10,
+    "canonicalize_hashrulers": true,
+    "enable_markup": true
+  },
+  "lint": {
+    "disabled_codes": [],
+    "function_pattern": "[0-9a-z_]+",
+    "macro_pattern": "[0-9A-Z_]+",
+    "global_var_pattern": "[A-Z][0-9A-Z_]+",
+    "internal_var_pattern": "_[A-Z][0-9A-Z_]+",
+    "local_var_pattern": "[a-z][a-z0-9_]+",
+    "private_var_pattern": "_[0-9a-z_]+",
+    "public_var_pattern": "[A-Z][0-9A-Z_]+",
+    "argument_var_pattern": "[a-z][a-z0-9_]+",
+    "keyword_pattern": "[A-Z][0-9A-Z_]+",
+    "max_conditionals_custom_parser": 2,
+    "min_statement_spacing": 1,
+    "max_statement_spacing": 2,
+    "max_returns": 6,
+    "max_branches": 12,
+    "max_arguments": 5,
+    "max_localvars": 15,
+    "max_statements": 50
+  },
+  "encode": {
+    "emit_byteorder_mark": false,
+    "input_encoding": "utf-8",
+    "output_encoding": "utf-8"
+  },
+  "misc": {
+    "per_command": {}
+  }
 }
