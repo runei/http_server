@@ -1,0 +1,17 @@
+{
+    "files.associations": {
+        "iostream": "cpp"
+    },
+    "files.eol": "\n",
+    "editor.wordWrap": "on",
+    "files.trimTrailingWhitespace": true,
+    "files.trimFinalNewlines": true,
+    "files.insertFinalNewline": true,
+    "C_Cpp.clang_format_fallbackStyle": "LLVM",
+    "editor.formatOnSave": true,
+    "cmake.pinnedCommands": [
+        "workbench.action.tasks.configureTaskRunner",
+        "workbench.action.tasks.runTask"
+    ],
+    "cmake.configureOnEdit": false
+}

@@ -1,0 +1,25 @@
+{
+    "name": "C++ Development Environment",
+    "dockerFile": "Dockerfile",
+    "customizations": {
+      "vscode": {
+        "settings": {
+          "C_Cpp.intelliSenseEngine": "default",
+          "C_Cpp.default.compilerPath": "/usr/bin/g++",
+          "C_Cpp.default.includePath": [
+            "${workspaceFolder}/include",
+            "/usr/include"
+          ]
+        },
+        "extensions": [
+          "ms-vscode.cpptools",
+          "esbenp.prettier-vscode",
+          "ms-vscode.cmake-tools",
+          "ms-vscode.cpptools-extension-pack",
+          "ms-vscode.cpptools-themes",
+          "twxs.cmake"
+        ]
+      }
+    },
+    "remoteUser": "root"
+  }

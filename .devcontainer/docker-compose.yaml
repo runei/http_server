@@ -1,0 +1,10 @@
+services:
+  gcc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./_bash_history:/root/.bash_history
+      - ../../http_server:/http_server
+    tty: true
+    stdin_open: true
