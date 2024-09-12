@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONTAINER_NAME="kind_antonelli"
+CONTAINER_NAME="gcc-container"
 
 isContainerRunning() {
     docker ps | grep "$CONTAINER_NAME" >/dev/null

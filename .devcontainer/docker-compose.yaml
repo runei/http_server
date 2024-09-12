@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: gcc-container
     volumes:
       - ./_bash_history:/root/.bash_history
       - ../../http_server:/http_server

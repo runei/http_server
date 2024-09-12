@@ -4,7 +4,7 @@ project(Calculator)
 
 set(CMAKE_CXX_STANDARD 20)
 
+enable_testing()
+
 add_subdirectory(src)
 add_subdirectory(tests)
-
-enable_testing()

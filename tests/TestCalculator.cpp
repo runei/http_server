@@ -6,8 +6,6 @@
 
 TEST_GROUP (CalculatorTest)
 {
-    Calculator calculator;
-
     void setup() {}
 
     void teardown() {}
@@ -21,7 +19,7 @@ TEST (CalculatorTest, Add)
     const double expected = 15.0;
 
     // Act
-    auto actual = calculator.add(a, b);
+    auto actual = Calculator::add(a, b);
 
     // Assert
     DOUBLES_EQUAL(expected, actual, 0.00001);
@@ -35,7 +33,7 @@ TEST (CalculatorTest, Subtract)
     const double expected = 5.0;
 
     // Act
-    auto actual = calculator.subtract(a, b);
+    auto actual = Calculator::subtract(a, b);
 
     // Assert
     DOUBLES_EQUAL(expected, actual, 0.00001);
@@ -49,7 +47,7 @@ TEST (CalculatorTest, Multiply)
     const double expected = 50.0;
 
     // Act
-    auto actual = calculator.multiply(a, b);
+    auto actual = Calculator::multiply(a, b);
 
     // Assert
     DOUBLES_EQUAL(expected, actual, 0.00001);
@@ -63,7 +61,7 @@ TEST (CalculatorTest, Divide)
     const double expected = 2.0;
 
     // Act
-    auto actual = calculator.divide(a, b);
+    auto actual = Calculator::divide(a, b);
 
     // Assert
     DOUBLES_EQUAL(expected, actual, 0.00001);
@@ -76,5 +74,5 @@ TEST (CalculatorTest, DivideByZero)
     const double b = 0.0;
 
     // Act and Assert
-    CHECK_THROWS(std::invalid_argument, calculator.divide(a, b));
+    CHECK_THROWS(std::invalid_argument, Calculator::divide(a, b));
 }
