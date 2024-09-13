@@ -28,9 +28,8 @@ ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 4
 Cpp11BracedListStyle: true
 DisableFormat: false
-FixNamespaceComments: false # we do not allow such comments
+FixNamespaceComments: false
 ForEachMacros:
-  # funny name, but this makes CppUTest code formatted reasonably well
   - "TEST_GROUP"
   - "TEST_GROUP_BASE"
   - "TEST"

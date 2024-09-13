@@ -25,13 +25,13 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake cppcheck valgrind clang-tidy cpputest
+          sudo apt-get install -y build-essential cmake cppcheck valgrind clang-tidy cpputest gcovr
 
       - name: Build
         run: make build
 
       - name: Run Unit Tests
-        run: make runtests
+        run: make test
 
       - name: Run Cppcheck (Static Code Analysis)
         run: make cppcheck
@@ -48,13 +48,25 @@ jobs:
           clang-format --version
           find ./src -name '*.cpp' -o -name '*.hpp' | xargs clang-format -style=file --dry-run -Werror
 
+      - name: Generate Coverage Report and Enforce 80% Threshold
+        run: |
+          make clean
+          make coverage
+
+          gcovr -r . --threshold 80 --fail-under-line 80 --html --html-details -o coverage.html
+
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: build-artifacts
           path: build/
 
-  # Optional: Security check using CodeQL analysis
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage.html
+
   security:
     runs-on: ubuntu-latest
     steps:

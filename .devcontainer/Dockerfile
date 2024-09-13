@@ -2,7 +2,7 @@
 FROM gcc:latest
 
 RUN apt-get update
-RUN apt-get install -y clang-format cmake cmake-format cpputest cppcheck
+RUN apt-get install -y clang-format cmake cmake-format cpputest cppcheck clang-tidy
 
 # Set git global variables
 RUN git config --global user.email "lminvernizzi@gmail.com"
@@ -16,6 +16,3 @@ COPY _bashrc /root/.bashrc
 
 # Declare the mount point as a volume
 VOLUME ["/http_server"]
-
-# Start an interactive shell as the default command
-CMD ["/bin/bash"]
