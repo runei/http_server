@@ -41,7 +41,7 @@ jobs:
 
       - name: Run Valgrind (Memory Leak Detection)
         if: matrix.build_type == 'Debug'
-        run: valgrind --leak-check=full ./build/tests/TestCalculator
+        run: valgrind --leak-check=full ./build/src/Main
 
       - name: Check Code Formatting with Clang-Format
         run: |

@@ -2,7 +2,7 @@
 FROM gcc:latest
 
 RUN apt-get update
-RUN apt-get install -y clang-format cmake cmake-format cpputest cppcheck clang-tidy
+RUN apt-get install -y clang-format cmake cmake-format cpputest cppcheck clang-tidy valgrind
 
 # Set git global variables
 RUN git config --global user.email "lminvernizzi@gmail.com"
