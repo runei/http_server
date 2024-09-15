@@ -37,7 +37,7 @@ jobs:
         run: make cppcheck
 
       - name: Run Clang-Tidy (Linting)
-        run: clang-tidy src/*.cpp -- -std=c++20
+        run: make tidy
 
       - name: Run Valgrind (Memory Leak Detection)
         if: matrix.build_type == 'Debug'

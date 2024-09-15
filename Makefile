@@ -48,3 +48,6 @@ coverage: clean
 	@echo "Moving coverage reports to $(CMAKE_COVERAGE_DIR)"
 	@find . -name "*.gcov" -exec mv {} $(CMAKE_COVERAGE_DIR) \;
 	@echo "Coverage report generated in $(CMAKE_COVERAGE_DIR)"
+
+tidy:
+	@clang-tidy -p=build -extra-arg=-Iinclude src/*.cpp include/*.hpp tests/*.cpp -- -std=c++20

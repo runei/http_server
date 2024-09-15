@@ -8,35 +8,143 @@ Checks: >
   modernize-*,
   performance-*,
   readability-*,
-  hicpp-*
+  hicpp-*,
+  portability-*,
+  misc-*,
+  concurrency-*,
+  abseil-*,
+  mpi-*,
+  fuchsia-*,
+  security-*,
+  z3-*,
+  c++20-*,
+  misc-unused-variables,
+  -cppcoreguidelines-pro-bounds-array-to-pointer-decay,  # Disable strict pointer decay warnings
+  -cppcoreguidelines-owning-memory,                      # Disable owning memory check for flexibility
+  -cppcoreguidelines-no-malloc,                          # Allow manual memory management if needed
+  -cppcoreguidelines-avoid-non-const-global-variables,
+  -modernize-use-trailing-return-type,
+  -cppcoreguidelines-special-member-functions,
+  -hicpp-special-member-functions,
 
-WarningsAsErrors: "*" # Treat all warnings as errors
-HeaderFilterRegex: ".*" # Apply checks to all files
-AnalyzeTemporaryDtors: false # Disable destructor checks for temporaries
+WarningsAsErrors: "*"  # Treat all warnings as errors
+
+HeaderFilterRegex: ".*"  # Apply checks to all files
+
+AnalyzeTemporaryDtors: false  # Disable destructor checks for temporaries
+
 CheckOptions:
-  - key: cppcoreguidelines-pro-bounds-array-to-pointer-decay
-    value: false # Disable strict pointer decay check
-
+  # Modernize checks for C++20
   - key: modernize-use-auto
-    value: true # Enforce use of 'auto'
-
-  - key: performance-move-const-arg
-    value: true # Prefer std::move over unnecessary copies
-
-  - key: readability-braces-around-statements
-    value: true # Add braces to single-line statements
-
-  - key: bugprone-exception-escape
-    value: true # Detect exceptions escaping destructors
-
-  - key: bugprone-undefined-memory-manipulation
-    value: true # Detect undefined memory manipulation
-
-  - key: clang-analyzer-cplusplus.NewDeleteLeaks
-    value: true # Check for memory leaks in new/delete
+    value: true # Enforce the use of 'auto' when appropriate
 
   - key: modernize-loop-convert
-    value: true # Use range-based loops when applicable
+    value: true # Prefer range-based loops in place of traditional loops
 
   - key: modernize-use-nullptr
-    value: true # Enforce use of 'nullptr' instead of 'NULL'
+    value: true # Prefer 'nullptr' over 'NULL'
+
+  - key: modernize-deprecated-headers
+    value: true # Use modern C++ headers instead of deprecated ones
+
+  - key: modernize-use-trailing-return-type
+    value: false # Enforce trailing return types
+
+  - key: modernize-use-override
+    value: true # Enforce use of 'override' for overridden methods
+
+  - key: modernize-return-braced-init-list
+    value: true # Suggest using braced-init-list in return statements
+
+  - key: modernize-use-using
+    value: true # Prefer 'using' over 'typedef'
+
+  - key: modernize-concat-nested-namespaces
+    value: true # Recommend using namespace concatenation (e.g., 'namespace a::b' for nested namespaces)
+
+  - key: modernize-avoid-c-arrays
+    value: true # Recommend using std::array or std::vector instead of C arrays
+
+  # Performance checks
+  - key: performance-unnecessary-value-param
+    value: true # Suggest passing non-trivial types by const reference
+
+  - key: performance-for-range-copy
+    value: true # Warn if a loop makes unnecessary copies of elements in a range
+
+  - key: performance-implicit-cast-in-loop
+    value: true # Avoid implicit casts inside loops that affect performance
+
+  - key: performance-move-const-arg
+    value: true # Prefer std::move over unnecessary copying for constant arguments
+
+  # Readability checks
+  - key: readability-avoid-const-params-in-decls
+    value: true # Warn when const is used in parameter declarations in headers
+
+  - key: readability-braces-around-statements
+    value: true # Enforce braces around single-line if/else/loop statements
+
+  - key: readability-isolate-declaration
+    value: true # Recommend splitting multiple variable declarations
+
+  - key: readability-misleading-indentation
+    value: true # Ensure consistent indentation to prevent misleading code structure
+
+  - key: readability-named-parameter
+    value: true # Suggest using named parameters to improve readability
+
+  - key: readability-redundant-control-flow
+    value: true # Warn when control statements (e.g., return, break) are redundant
+
+  - key: readability-static-accessed-through-instance
+    value: true # Suggest accessing static members via the class name instead of an instance
+
+  # Bug-prone code checks
+  - key: bugprone-branch-clone
+    value: true # Detect suspiciously similar branches of conditional statements
+
+  - key: bugprone-suspicious-missing-comma
+    value: true # Detect cases where a comma is likely missing
+
+  - key: bugprone-exception-escape
+    value: true # Warn when exceptions escape destructors or constructors
+
+  - key: bugprone-infinite-loop
+    value: true # Detect infinite loops due to bad conditions
+
+  - key: bugprone-undefined-memory-manipulation
+    value: true # Detect potentially undefined behavior in memory operations
+
+  - key: bugprone-narrowing-conversions
+    value: true # Warn about potential narrowing type conversions
+
+  # Security checks
+  - key: security-insecure-api-strcpy
+    value: true # Warn against the use of unsafe functions like 'strcpy'
+
+  - key: security-integer-division
+    value: true # Warn about dangerous integer division operations
+
+  # Fuchsia recommendations (also applicable in general for C++20)
+  - key: fuchsia-default-arguments
+    value: true # Warn about default arguments in function declarations
+
+  - key: fuchsia-trailing-return
+    value: true # Recommend using trailing return types consistently
+
+  # Cert guidelines for safety-critical systems
+  - key: cert-err34-c
+    value: true # Warn on improper use of 'strcpy'
+
+  - key: cert-dcl21-cpp
+    value: true # Warn on violating Cert DCL21-C++ (Avoid returning a reference to a local object)
+
+  # Optional: disable some very specific checks
+  - key: cppcoreguidelines-avoid-c-arrays
+    value: false # Disable this if you still need to use C-style arrays in legacy code
+  - key: cppcoreguidelines-special-member-functions
+    value: false # Disable strict enforcement of rule-of-five for specific use cases
+
+  - key: misc-unused-variables
+    value: true

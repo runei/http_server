@@ -6,73 +6,75 @@
 
 TEST_GROUP (CalculatorTest)
 {
-    void setup() {}
+    static constexpr double threshold = 0.000001;
 
-    void teardown() {}
+    void setup() override {}
+
+    void teardown() override {}
 };
 
 TEST (CalculatorTest, Add)
 {
     //Assign
-    const double a        = 10.0;
-    const double b        = 5.0;
+    const double num1     = 10.0;
+    const double num2     = 5.0;
     const double expected = 15.0;
 
     // Act
-    auto actual = Calculator::add(a, b);
+    auto actual = Calculator::add(num1, num2);
 
     // Assert
-    DOUBLES_EQUAL(expected, actual, 0.00001);
+    DOUBLES_EQUAL(expected, actual, threshold);
 }
 
 TEST (CalculatorTest, Subtract)
 {
     //Assign
-    const double a        = 10.0;
-    const double b        = 5.0;
+    const double num1     = 10.0;
+    const double num2     = 5.0;
     const double expected = 5.0;
 
     // Act
-    auto actual = Calculator::subtract(a, b);
+    auto actual = Calculator::subtract(num1, num2);
 
     // Assert
-    DOUBLES_EQUAL(expected, actual, 0.00001);
+    DOUBLES_EQUAL(expected, actual, threshold);
 }
 
 TEST (CalculatorTest, Multiply)
 {
     //Assign
-    const double a        = 10.0;
-    const double b        = 5.0;
+    const double num1     = 10.0;
+    const double num2     = 5.0;
     const double expected = 50.0;
 
     // Act
-    auto actual = Calculator::multiply(a, b);
+    auto actual = Calculator::multiply(num1, num2);
 
     // Assert
-    DOUBLES_EQUAL(expected, actual, 0.00001);
+    DOUBLES_EQUAL(expected, actual, threshold);
 }
 
 TEST (CalculatorTest, Divide)
 {
     //Assign
-    const double a        = 10.0;
-    const double b        = 5.0;
+    const double num1     = 10.0;
+    const double num2     = 5.0;
     const double expected = 2.0;
 
     // Act
-    auto actual = Calculator::divide(a, b);
+    auto actual = Calculator::divide(num1, num2);
 
     // Assert
-    DOUBLES_EQUAL(expected, actual, 0.00001);
+    DOUBLES_EQUAL(expected, actual, threshold);
 }
 
 TEST (CalculatorTest, DivideByZero)
 {
     //Assign
-    const double a = 10.0;
-    const double b = 0.0;
+    const double num1 = 10.0;
+    const double num2 = 0.0;
 
     // Act and Assert
-    CHECK_THROWS(std::invalid_argument, Calculator::divide(a, b));
+    CHECK_THROWS(std::invalid_argument, Calculator::divide(num1, num2));
 }
