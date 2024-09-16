@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BUILD_TYPE=${1:-Release}
+BUILD_TYPE = ${1:-Release}
 CMAKE_SOURCE_DIR = $(shell pwd)
 CMAKE_BUILD_DIR = $(CMAKE_SOURCE_DIR)/build
 CMAKE_COVERAGE_DIR = $(CMAKE_BUILD_DIR)/coverage
@@ -43,7 +43,7 @@ clean:
 	@echo "Build directory cleaned"
 
 run:
-	@./$(CMAKE_BUILD_DIR)/src/Main
+	@$(CMAKE_BUILD_DIR)/src/Main
 
 test:
 	@cd $(CMAKE_BUILD_DIR) && ctest --output-on-failure
