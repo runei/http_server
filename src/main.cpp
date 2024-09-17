@@ -6,6 +6,8 @@
 #include <netinet/in.h>
 #include <unistd.h>
 
+#include "SocketManager.hpp"
+
 constexpr int PORT = 8080;
 
 std::string buildHttpResponse(const std::string& content)
@@ -40,49 +42,36 @@ void handleClient(int client_socket)
 
 int main()
 {
-    std::cout << "Running" << std::endl;
-
-    int         server_fd;
-    int         client_socket;
-    sockaddr_in address{};
-    socklen_t   addrlen = sizeof(address);
-
-    server_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if (server_fd <= 0)
+    try
     {
-        std::cerr << "Socket creation failed" << std::endl;
-        return -1;
-    }
+        std::cout << "Running" << std::endl;
 
-    address.sin_family      = AF_INET;
-    address.sin_addr.s_addr = INADDR_ANY;
-    address.sin_port        = htons(PORT);
+        auto& socket_manager = SocketManager::getInstance();
 
-    if (bind(server_fd, (sockaddr*)&address, addrlen) < 0)
-    {
-        std::cerr << "Binding failed" << std::endl;
-        return -1;
-    }
+        socket_manager.createSocket();
 
-    if (listen(server_fd, 10) < 0)
-    {
-        std::cerr << "Listening failed" << std::endl;
-        return -1;
-    }
+        socket_manager.bindSocket(PORT);
 
-    std::cout << "Listening on port " << PORT << std::endl;
+        socket_manager.listenSocket(10);
 
-    while (true)
-    {
-        client_socket = accept(server_fd, (sockaddr*)&address, &addrlen);
-        if (client_socket < 0)
+        std::cout << "Listening on port " << PORT << std::endl;
+
+        while (true)
         {
-            std::cerr << "Accepting connection failed" << std::endl;
-            continue;
+            int client_socket = socket_manager.acceptConnection();
+            if (client_socket < 0)
+            {
+                std::cerr << "Accepting connection failed" << std::endl;
+                continue;
+            }
+
+            handleClient(client_socket);
         }
-
-        handleClient(client_socket);
     }
-
+    catch (const std::exception& ex)
+    {
+        std::cerr << "Error: " << ex.what() << std::endl;
+        return -1;
+    }
     return 0;
 }
