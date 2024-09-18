@@ -48,9 +48,7 @@ int main()
 
         auto& socket_manager = SocketManager::getInstance();
 
-        socket_manager.createSocket();
-
-        socket_manager.bindSocket(PORT);
+        socket_manager.createSocket(PORT);
 
         socket_manager.listenSocket(10);
 
@@ -66,7 +64,9 @@ int main()
             }
 
             handleClient(client_socket);
+            close(client_socket);
         }
+        socket_manager.closeSocket();
     }
     catch (const std::exception& ex)
     {

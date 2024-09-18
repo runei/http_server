@@ -70,5 +70,6 @@
         "workbench.action.tasks.runTask"
     ],
     "cmake.configureOnEdit": false,
-    "C_Cpp.default.compilerPath": "/usr/bin/g++"
+    "C_Cpp.default.compilerPath": "/usr/bin/g++",
+    "C_Cpp.default.cppStandard": "c++20"
 }

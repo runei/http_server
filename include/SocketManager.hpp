@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <netinet/in.h>
 
 class SocketManager
@@ -12,16 +10,20 @@ public:
     SocketManager& operator=(const SocketManager&) = delete;
 
     static SocketManager& getInstance();
-    void                  createSocket();
-    void                  bindSocket(uint16_t port);
+    void                  createSocket(uint16_t port);
     void                  listenSocket(int n_connections);
     int                   acceptConnection();
+    void                  closeSocket();
 
 private:
     SocketManager() = default;
 
-    void setAddress(uint16_t port);
+    void               bindSocket(uint16_t port);
+    void               setAddress(uint16_t port);
+    [[nodiscard]] bool isSocketCreated() const;
 
-    int         m_server_fd{-1};
+    static constexpr int INACTIVE_SERVER = -1;
+
+    int         m_server_socket{INACTIVE_SERVER};
     sockaddr_in m_address{};
 };
