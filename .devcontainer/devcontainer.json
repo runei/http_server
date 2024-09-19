@@ -9,7 +9,7 @@
         "C_Cpp.intelliSenseEngine": "default",
         "C_Cpp.default.compilerPath": "/usr/bin/g++",
         "C_Cpp.default.includePath": [
-          "${workspaceFolder}/include",
+          "${workspaceFolder}/src/**",
           "/usr/include"
         ]
       },

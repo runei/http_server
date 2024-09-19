@@ -1,10 +1,5 @@
-add_library(
-    SocketManager
-    STATIC
-    SocketManager.cpp
-)
-
-target_include_directories(SocketManager PUBLIC ${CMAKE_SOURCE_DIR}/include)
+# add_subdirectory(handlers) add_subdirectory(http) add_subdirectory(server)
+add_subdirectory(socket)
 
 add_executable(Main main.cpp)
 
