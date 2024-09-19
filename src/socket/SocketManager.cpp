@@ -60,7 +60,7 @@ void SocketManager::closeSocket()
     if (isSocketCreated())
     {
         close(m_server_socket);
-        m_server_socket = INACTIVE_SERVER;
+        m_server_socket = InactiveServer;
     }
 }
 
@@ -83,5 +83,5 @@ void SocketManager::setAddress(uint16_t port)
 
 [[nodiscard]] bool SocketManager::isSocketCreated() const
 {
-    return m_server_socket != INACTIVE_SERVER;
+    return m_server_socket != InactiveServer;
 }

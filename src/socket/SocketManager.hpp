@@ -22,8 +22,8 @@ private:
     void               setAddress(uint16_t port);
     [[nodiscard]] bool isSocketCreated() const;
 
-    static constexpr int INACTIVE_SERVER = -1;
+    static constexpr int InactiveServer = -1;
 
-    int         m_server_socket{INACTIVE_SERVER};
+    int         m_server_socket{InactiveServer};
     sockaddr_in m_address{};
 };

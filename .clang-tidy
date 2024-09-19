@@ -27,11 +27,11 @@ Checks: >
   -cppcoreguidelines-special-member-functions,
   -hicpp-special-member-functions,
 
-WarningsAsErrors: "*"  # Treat all warnings as errors
+WarningsAsErrors: "*" # Treat all warnings as errors
 
-HeaderFilterRegex: ".*"  # Apply checks to all files
+HeaderFilterRegex: ".*" # Apply checks to all files
 
-AnalyzeTemporaryDtors: false  # Disable destructor checks for temporaries
+AnalyzeTemporaryDtors: false # Disable destructor checks for temporaries
 
 CheckOptions:
   # Modernize checks for C++20
@@ -148,3 +148,58 @@ CheckOptions:
 
   - key: misc-unused-variables
     value: true
+
+  - key: readability-identifier-naming.FunctionCase
+    value: camelBack
+
+  # Naming convention for constants (PascalCase)
+  - key: readability-identifier-naming.ConstantCase
+    value: CamelCase
+
+  # Naming convention for constexpr variables (PascalCase)
+  - key: readability-identifier-naming.ConstexprVariableCase
+    value: CamelCase
+
+  # Naming convention for variables (lower_case)
+  - key: readability-identifier-naming.VariableCase
+    value: lower_case
+
+  # Naming convention for member variables (m_lower_case)
+  - key: readability-identifier-naming.MemberCase
+    value: lower_case
+
+  # Prefix for member variables (m_)
+  - key: readability-identifier-naming.MemberPrefix
+    value: m_
+
+  # Naming convention for static member variables (s_camelCase)
+  - key: readability-identifier-naming.StaticMemberCase
+    value: camelBack
+
+  # Prefix for static member variables (s_)
+  - key: readability-identifier-naming.StaticMemberPrefix
+    value: s_
+
+  # Naming convention for global variables (g_camelCase)
+  - key: readability-identifier-naming.GlobalVariableCase
+    value: camelBack
+
+  # Prefix for global variables (g_)
+  - key: readability-identifier-naming.GlobalVariablePrefix
+    value: g_
+
+  # Naming convention for macros (ALL_CAPS)
+  - key: readability-identifier-naming.MacroDefinitionCase
+    value: UPPER_CASE
+
+  # Naming convention for namespaces (camelCase)
+  - key: readability-identifier-naming.NamespaceCase
+    value: camelBack
+
+  # Naming convention for enums (PascalCase)
+  - key: readability-identifier-naming.EnumCase
+    value: CamelCase
+
+  # Naming convention for enum constants (PascalCase)
+  - key: readability-identifier-naming.EnumConstantCase
+    value: CamelCase
