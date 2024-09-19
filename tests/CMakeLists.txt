@@ -1,6 +1,6 @@
-# add_executable( TestCalculator TestCalculator.cpp main.cpp )
+add_executable( TestSocketManager TestSocketManager.cpp main.cpp )
 
-# target_link_libraries( TestCalculator PRIVATE Calculator CppUTest CppUTestExt
-# )
+target_link_libraries( TestSocketManager PRIVATE SocketManager CppUTest CppUTestExt
+)
 
-# add_test(NAME TestCalculator COMMAND TestCalculator)
+add_test(NAME TestSocketManager COMMAND TestSocketManager)
