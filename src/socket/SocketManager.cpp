@@ -3,9 +3,10 @@
 #include <sys/socket.h>
 
 #include <bit>
-#include <stdexcept>
 
 #include <unistd.h>
+
+#include "SocketException.hpp"
 
 SocketManager& SocketManager::getInstance()
 {
@@ -17,13 +18,13 @@ void SocketManager::createSocket(uint16_t port)
 {
     if (isSocketCreated())
     {
-        throw std::runtime_error("Socket already created");
+        throw SocketException("Socket already created");
     }
 
     m_server_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (m_server_socket < 0)
     {
-        throw std::runtime_error("Failed to create socket");
+        throw SocketException("Failed to create socket", errno);
     }
 
     bindSocket(port);
@@ -33,12 +34,12 @@ void SocketManager::listenSocket(int n_connections)
 {
     if (!isSocketCreated())
     {
-        throw std::runtime_error("Socket not created yet");
+        throw SocketException("Socket not created yet");
     }
 
     if (listen(m_server_socket, n_connections) < 0)
     {
-        throw std::runtime_error("Failed to listen socket");
+        throw SocketException("Failed to listen socket", errno);
     }
 }
 
@@ -46,7 +47,7 @@ int SocketManager::acceptConnection()
 {
     if (!isSocketCreated())
     {
-        throw std::runtime_error("Socket not created yet");
+        throw SocketException("Socket not created yet");
     }
 
     sockaddr_in client_address{};
@@ -70,7 +71,7 @@ void SocketManager::bindSocket(uint16_t port)
 
     if (bind(m_server_socket, std::bit_cast<sockaddr*>(&m_address), sizeof(m_address)) < 0)
     {
-        throw std::runtime_error("Failed to bind socket");
+        throw SocketException("Failed to bind socket", errno);
     }
 }
 

@@ -6,6 +6,7 @@
 
 #include <arpa/inet.h>
 
+#include "SocketException.hpp"
 #include "SocketManager.hpp"
 
 void simulateClientConnection(uint16_t port)
@@ -13,7 +14,7 @@ void simulateClientConnection(uint16_t port)
     int client_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (client_socket < 0)
     {
-        throw std::runtime_error("Failed to create client socket");
+        throw SocketException("Failed to create client socket");
     }
 
     sockaddr_in server_address{};
@@ -24,15 +25,14 @@ void simulateClientConnection(uint16_t port)
     if (connect(client_socket, std::bit_cast<sockaddr*>(&server_address), sizeof(server_address)) < 0)
     {
         close(client_socket);
-        throw std::runtime_error("Failed to connect to server");
+        throw SocketException("Failed to connect to server");
     }
     close(client_socket);
 }
 
 TEST_GROUP (SocketManagerTest)
 {
-    static constexpr uint16_t Port              = 8080;
-    static constexpr int      NumberConnections = 10;
+    static constexpr int NumberConnections = 10;
 
     void setup() override {}
 
@@ -45,6 +45,7 @@ TEST_GROUP (SocketManagerTest)
 TEST (SocketManagerTest, CreateSocket)
 {
     // Arrange
+    const uint16_t Port           = 8080;
     SocketManager& socket_manager = SocketManager::getInstance();
 
     // Act & Assert
@@ -62,16 +63,18 @@ TEST (SocketManagerTest, CreateSocket)
 TEST (SocketManagerTest, CreateSocketWhenAlreadyCreated)
 {
     // Arrange
+    const uint16_t Port           = 8081;
     SocketManager& socket_manager = SocketManager::getInstance();
     socket_manager.createSocket(Port);
 
     // Act & Assert
-    CHECK_THROWS(std::runtime_error, socket_manager.createSocket(8081));
+    CHECK_THROWS(SocketException, socket_manager.createSocket(8081));
 }
 
 TEST (SocketManagerTest, ListenSocket)
 {
     // Arrange
+    const uint16_t Port           = 8082;
     SocketManager& socket_manager = SocketManager::getInstance();
     socket_manager.createSocket(Port);
 
@@ -90,6 +93,7 @@ TEST (SocketManagerTest, ListenSocket)
 TEST (SocketManagerTest, AcceptConnection)
 {
     // Arrange
+    const uint16_t Port           = 8083;
     SocketManager& socket_manager = SocketManager::getInstance();
     socket_manager.createSocket(Port);
     socket_manager.listenSocket(NumberConnections);
@@ -114,6 +118,7 @@ TEST (SocketManagerTest, AcceptConnection)
 TEST (SocketManagerTest, CloseSocket)
 {
     // Arrange
+    const uint16_t Port           = 8084;
     SocketManager& socket_manager = SocketManager::getInstance();
     socket_manager.createSocket(Port);
 
@@ -121,5 +126,5 @@ TEST (SocketManagerTest, CloseSocket)
     socket_manager.closeSocket();
 
     // Assert
-    CHECK_THROWS(std::runtime_error, socket_manager.listenSocket(NumberConnections));
+    CHECK_THROWS(SocketException, socket_manager.listenSocket(NumberConnections));
 }
