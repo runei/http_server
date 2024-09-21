@@ -58,7 +58,13 @@ run:
 
 # Run tests
 test:
-	@cd ${CMAKE_BUILD_DIR} && ctest --output-on-failure || { echo 'Tests failed'; exit 1; }
+	@$(MAKE) build
+	@if [ -n "$(TESTNAME)" ]; then \
+		${CMAKE_BUILD_DIR}/tests/$(TESTNAME) -v || { echo 'Tests failed'; exit 1; }; \
+	else \
+		cd ${CMAKE_BUILD_DIR} && ctest --output-on-failure --verbose || { echo 'Tests failed'; exit 1; }; \
+	fi
+	#
 
 # Format CMake files
 format:

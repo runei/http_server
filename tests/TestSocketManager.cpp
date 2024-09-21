@@ -104,7 +104,11 @@ TEST (SocketManagerTest, AcceptConnection)
     // Assert
     try
     {
-        socket_manager.acceptConnection();
+        auto client_socket = socket_manager.acceptConnection();
+        if (!client_socket)
+        {
+            FAIL("Failed to accept client connection.");
+        }
         CHECK(true);
     }
     catch (...)

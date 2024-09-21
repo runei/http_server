@@ -43,7 +43,7 @@ void SocketManager::listenSocket(int n_connections)
     }
 }
 
-int SocketManager::acceptConnection()
+[[nodiscard]] std::optional<int> SocketManager::acceptConnection()
 {
     if (!isSocketCreated())
     {
@@ -53,14 +53,23 @@ int SocketManager::acceptConnection()
     sockaddr_in client_address{};
     socklen_t   client_len = sizeof(client_address);
 
-    return accept(m_server_socket, std::bit_cast<sockaddr*>(&client_address), &client_len);
+    int client_socket = accept(m_server_socket, std::bit_cast<sockaddr*>(&client_address), &client_len);
+    if (client_socket < 0)
+    {
+        return std::nullopt;
+    }
+
+    return client_socket;
 }
 
 void SocketManager::closeSocket()
 {
     if (isSocketCreated())
     {
-        close(m_server_socket);
+        if (close(m_server_socket) < 0)
+        {
+            throw SocketException("Failed to close socket:", errno);
+        }
         m_server_socket = InactiveServer;
     }
 }
@@ -71,6 +80,7 @@ void SocketManager::bindSocket(uint16_t port)
 
     if (bind(m_server_socket, std::bit_cast<sockaddr*>(&m_address), sizeof(m_address)) < 0)
     {
+        closeSocket();
         throw SocketException("Failed to bind socket", errno);
     }
 }

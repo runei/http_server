@@ -56,15 +56,15 @@ int main()
 
         while (true)
         {
-            int client_socket = socket_manager.acceptConnection();
-            if (client_socket < 0)
+            auto client_socket = socket_manager.acceptConnection();
+            if (!client_socket)
             {
                 std::cerr << "Accepting connection failed" << std::endl;
                 continue;
             }
 
-            handleClient(client_socket);
-            close(client_socket);
+            handleClient(client_socket.value());
+            close(client_socket.value());
         }
         socket_manager.closeSocket();
     }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include <netinet/in.h>
 
 class SocketManager
@@ -9,11 +11,11 @@ public:
     SocketManager(const SocketManager&)            = delete;
     SocketManager& operator=(const SocketManager&) = delete;
 
-    static SocketManager& getInstance();
-    void                  createSocket(uint16_t port);
-    void                  listenSocket(int n_connections);
-    int                   acceptConnection();
-    void                  closeSocket();
+    static SocketManager&            getInstance();
+    void                             createSocket(uint16_t port);
+    void                             listenSocket(int n_connections);
+    [[nodiscard]] std::optional<int> acceptConnection();
+    void                             closeSocket();
 
 private:
     SocketManager() = default;
