@@ -160,16 +160,19 @@ CheckOptions:
   - key: readability-identifier-naming.ConstexprVariableCase
     value: CamelCase
 
-  # Naming convention for variables (lower_case)
   - key: readability-identifier-naming.VariableCase
     value: lower_case
 
-  # Naming convention for member variables (m_lower_case)
-  - key: readability-identifier-naming.MemberCase
+  # Naming convention for public member variables (PascalCase)
+  - key: readability-identifier-naming.PublicMemberCase
+    value: CamelCase
+
+  # Naming convention for private member variables (m_lower_case)
+  - key: readability-identifier-naming.PrivateMemberCase
     value: lower_case
 
-  # Prefix for member variables (m_)
-  - key: readability-identifier-naming.MemberPrefix
+  # Prefix for private member variables (m_)
+  - key: readability-identifier-naming.PrivateMemberPrefix
     value: m_
 
   # Naming convention for static member variables (s_camelCase)

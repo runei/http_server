@@ -58,7 +58,6 @@ run:
 
 # Run tests
 test:
-	@$(MAKE) build
 	@if [ -n "$(TESTNAME)" ]; then \
 		${CMAKE_BUILD_DIR}/tests/$(TESTNAME) -v || { echo 'Tests failed'; exit 1; }; \
 	else \
@@ -80,5 +79,5 @@ tidy:
 	@echo "Running clang-tidy..."
 	@for file in ${SRC_FILES}; do \
 		echo "Checking $$file..."; \
-		clang-tidy -p=build ${EXTRA_ARG} $$file -- -std=c++20 || { echo 'clang-tidy failed on $$file'; }; \
+		clang-tidy -p=build ${EXTRA_ARG} --extra-arg=-DCPPUTEST_MEM_LEAK_DETECTION_DISABLED $$file -- -std=c++20 || { echo 'clang-tidy failed on $$file'; }; \
 	done
