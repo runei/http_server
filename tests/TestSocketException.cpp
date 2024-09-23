@@ -13,7 +13,7 @@ TEST_GROUP (SocketExceptionTest)
 TEST (SocketExceptionTest, ThrowErrorMessage)
 {
     // Arrange
-    std::string_view expected = "Socket Error: Connection failed";
+    std::string_view expected = "Connection failed";
 
     // Act
     SocketException actual("Connection failed");
@@ -26,7 +26,7 @@ TEST (SocketExceptionTest, ErrorNumberInMessage)
 {
     // Arrange
     int              error_number = EACCES; // Permission denied error code
-    std::string_view expected     = "Socket Error: Connection failed: Permission denied";
+    std::string_view expected     = "Connection failed: Permission denied";
 
     // Act
     SocketException actual("Connection failed", error_number);

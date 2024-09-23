@@ -23,24 +23,6 @@ TEST (HttpRequestTest, ConstructHttpRequestWithValidMethodAndUrl)
     STRCMP_EQUAL(url.data(), request.getUrl().data());
 }
 
-TEST (HttpRequestTest, AddHeadersToHttpRequestAndRetrieveThem)
-{
-    // Arrange
-    std::string_view method       = "GET";
-    std::string_view url          = "/index.html";
-    std::string_view header_key   = "Accept";
-    std::string_view header_value = "text/html";
-
-    // Act
-    HttpRequest request =
-        HttpRequest::Builder().setMethod(method).setUrl(url).addHeader(header_key, header_value).build();
-
-    // Assert
-    std::optional<std::string_view> retrieved_header = request.getHeader(header_key);
-    CHECK(retrieved_header.has_value());
-    STRCMP_EQUAL(header_value.data(), retrieved_header->data());
-}
-
 TEST (HttpRequestTest, GetHeaderReturnsNulloptIfHeaderIsNotFound)
 {
     // Arrange

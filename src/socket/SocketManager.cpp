@@ -18,13 +18,13 @@ void SocketManager::createSocket(uint16_t port)
 {
     if (isSocketCreated())
     {
-        throw SocketException("Socket already created");
+        throw SocketException("SocketManager: Socket already created");
     }
 
     m_server_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (m_server_socket < 0)
     {
-        throw SocketException("Failed to create socket", errno);
+        throw SocketException("SocketManager: Failed to create socket", errno);
     }
 
     bindSocket(port);
@@ -34,12 +34,12 @@ void SocketManager::listenSocket(int n_connections)
 {
     if (!isSocketCreated())
     {
-        throw SocketException("Socket not created yet");
+        throw SocketException("SocketManager: Socket not created yet");
     }
 
     if (listen(m_server_socket, n_connections) < 0)
     {
-        throw SocketException("Failed to listen socket", errno);
+        throw SocketException("SocketManager: Failed to listen socket", errno);
     }
 }
 
@@ -47,7 +47,7 @@ void SocketManager::listenSocket(int n_connections)
 {
     if (!isSocketCreated())
     {
-        throw SocketException("Socket not created yet");
+        throw SocketException("SocketManager: Socket not created yet");
     }
 
     sockaddr_in client_address{};
@@ -68,7 +68,7 @@ void SocketManager::closeSocket()
     {
         if (close(m_server_socket) < 0)
         {
-            throw SocketException("Failed to close socket:", errno);
+            throw SocketException("SocketManager: Failed to close socket:", errno);
         }
         m_server_socket = InactiveServer;
     }
@@ -81,7 +81,7 @@ void SocketManager::bindSocket(uint16_t port)
     if (bind(m_server_socket, std::bit_cast<sockaddr*>(&m_address), sizeof(m_address)) < 0)
     {
         closeSocket();
-        throw SocketException("Failed to bind socket", errno);
+        throw SocketException("SocketManager: Failed to bind socket", errno);
     }
 }
 

@@ -14,7 +14,7 @@ void simulateClientConnection(uint16_t port)
     int client_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (client_socket < 0)
     {
-        throw SocketException("Failed to create client socket");
+        throw SocketException("TestSocketManager: Failed to create client socket");
     }
 
     sockaddr_in server_address{};
@@ -25,7 +25,7 @@ void simulateClientConnection(uint16_t port)
     if (connect(client_socket, std::bit_cast<sockaddr*>(&server_address), sizeof(server_address)) < 0)
     {
         close(client_socket);
-        throw SocketException("Failed to connect to server");
+        throw SocketException("TestSocketManager: Failed to connect to server");
     }
     close(client_socket);
 }
