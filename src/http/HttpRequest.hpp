@@ -7,13 +7,7 @@
 class HttpRequest
 {
 public:
-    struct HttpMethod;
-    struct HttpUrl;
     class Builder;
-
-    HttpRequest(const HttpMethod&                                      method,
-                const HttpUrl&                                         url,
-                std::unordered_map<std::string_view, std::string_view> headers);
 
     [[nodiscard]] std::string_view                                       getMethod() const;
     [[nodiscard]] std::string_view                                       getUrl() const;
@@ -21,6 +15,13 @@ public:
     [[nodiscard]] std::unordered_map<std::string_view, std::string_view> getHeaders() const;
 
 private:
+    struct HttpMethod;
+    struct HttpUrl;
+
+    HttpRequest(const HttpMethod&                                      method,
+                const HttpUrl&                                         url,
+                std::unordered_map<std::string_view, std::string_view> headers);
+
     std::string_view                                       m_method;
     std::string_view                                       m_url;
     std::unordered_map<std::string_view, std::string_view> m_headers;

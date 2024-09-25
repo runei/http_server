@@ -1,5 +1,5 @@
 # add_subdirectory(handlers)  add_subdirectory(server)
-add_subdirectory(exceptions)
+add_subdirectory(common)
 add_subdirectory(http)
 add_subdirectory(socket)
 

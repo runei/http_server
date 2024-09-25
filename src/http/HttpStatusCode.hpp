@@ -36,7 +36,7 @@ enum class HttpStatusCode
     GatewayTimeout      = 504
 };
 
-class HttpStatusHelper
+class HttpStatusCodeHelper
 {
 public:
     static std::string_view getHttpStatusDescription(HttpStatusCode code);

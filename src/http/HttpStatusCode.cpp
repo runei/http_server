@@ -2,17 +2,17 @@
 
 #include "SocketException.hpp"
 
-std::string_view HttpStatusHelper::getHttpStatusDescription(HttpStatusCode code)
+std::string_view HttpStatusCodeHelper::getHttpStatusDescription(HttpStatusCode code)
 {
-    auto it = m_status_code_map.find(code);
-    if (it == m_status_code_map.end())
+    auto result = m_status_code_map.find(code);
+    if (result == m_status_code_map.end())
     {
         throw SocketException("HttpStatusCode: Undefined status code");
     }
-    return it->second;
+    return result->second;
 }
 
-const std::map<HttpStatusCode, std::string_view> HttpStatusHelper::m_status_code_map = {
+const std::map<HttpStatusCode, std::string_view> HttpStatusCodeHelper::m_status_code_map = {
     {HttpStatusCode::OK, "200 OK"},
     {HttpStatusCode::Created, "201 Created"},
     {HttpStatusCode::NoContent, "204 No Content"},
