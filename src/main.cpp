@@ -6,18 +6,23 @@
 #include <netinet/in.h>
 #include <unistd.h>
 
+#include "HttpResponse.hpp"
+#include "HttpStatusCode.hpp"
 #include "SocketManager.hpp"
 
 constexpr int PORT = 8080;
 
 std::string buildHttpResponse(const std::string& content)
 {
-    std::string response = "HTTP/1.1 200 OK\n";
-    response += "Content-Lenght: " + std::to_string(content.size()) + "\n";
-    response += "Content-Type: text/html\n";
-    response += "Connection: close\n\n";
-    response += content;
-    return response;
+    auto response = HttpResponse::Builder()
+                        .setStatusCode(HttpStatusCode::OK)
+                        .addHeader("Content-Lenght", std::to_string(content.size()))
+                        .addHeader("Content-Type", "text/html")
+                        .addHeader("Connection", "close")
+                        .setBody(content)
+                        .build();
+
+    return response.buildResponse();
 }
 
 void handleClient(int client_socket)

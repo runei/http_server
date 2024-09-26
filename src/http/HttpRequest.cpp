@@ -2,10 +2,10 @@
 
 #include "SocketException.hpp"
 
-HttpRequest::HttpRequest(const HttpMethod&                                      method,
-                         const HttpUrl&                                         url,
+HttpRequest::HttpRequest(const Method&                                          method,
+                         const Url&                                             url,
                          std::unordered_map<std::string_view, std::string_view> headers)
-    : m_method(method.Method), m_url(url.Url), m_headers(std::move(headers))
+    : m_method(method.value()), m_url(url.value()), m_headers(std::move(headers))
 {
     if (m_method.empty() || m_url.empty())
     {
@@ -58,5 +58,5 @@ HttpRequest::Builder& HttpRequest::Builder::addHeader(std::string_view key, std:
 
 HttpRequest HttpRequest::Builder::build()
 {
-    return {HttpMethod{m_method}, HttpUrl{m_url}, m_headers};
+    return {Method(m_method), Url(m_url), m_headers};
 }

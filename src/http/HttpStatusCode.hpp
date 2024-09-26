@@ -42,5 +42,6 @@ public:
     static std::string_view getHttpStatusDescription(HttpStatusCode code);
 
 private:
-    static const std::map<HttpStatusCode, std::string_view> m_status_code_map;
+    static constexpr size_t                                                                   NumberOfStatusCodes = 22;
+    static const std::array<std::pair<HttpStatusCode, std::string_view>, NumberOfStatusCodes> StatusCodeArray;
 };

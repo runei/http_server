@@ -59,11 +59,15 @@ run:
 # Run tests
 test:
 	@if [ -n "$(TESTNAME)" ]; then \
-		${CMAKE_BUILD_DIR}/tests/$(TESTNAME) -v || { echo 'Tests failed'; exit 1; }; \
+		TEST_PATH=$(shell find ${CMAKE_BUILD_DIR}/tests -name $(TESTNAME)); \
+		if [ -z "$$TEST_PATH" ]; then \
+			echo "Test executable $(TESTNAME) not found"; \
+			exit 1; \
+		fi; \
+		$$TEST_PATH -v || { echo 'Tests failed'; exit 1; }; \
 	else \
 		cd ${CMAKE_BUILD_DIR} && ctest --output-on-failure --verbose || { echo 'Tests failed'; exit 1; }; \
 	fi
-	#
 
 # Format CMake files
 format:
