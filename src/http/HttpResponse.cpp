@@ -2,11 +2,7 @@
 
 #include <sstream>
 
-#include "Definitions.hpp"
-
-HttpResponse::HttpResponse(HttpStatusCode                                         status_code,
-                           std::unordered_map<std::string_view, std::string_view> headers,
-                           std::string_view                                       body)
+HttpResponse::HttpResponse(HttpStatusCode status_code, HttpHeaders headers, std::string_view body)
     : m_status_code(status_code), m_headers(std::move(headers)), m_body(body)
 {
 }

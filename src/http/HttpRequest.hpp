@@ -2,7 +2,8 @@
 
 #include <optional>
 #include <string>
-#include <unordered_map>
+
+#include "Definitions.hpp"
 
 class HttpRequest
 {
@@ -11,17 +12,17 @@ public:
     class Url;
     class Builder;
 
-    [[nodiscard]] std::string_view                                       getMethod() const;
-    [[nodiscard]] std::string_view                                       getUrl() const;
-    [[nodiscard]] std::optional<std::string_view>                        getHeader(std::string_view key) const;
-    [[nodiscard]] std::unordered_map<std::string_view, std::string_view> getHeaders() const;
+    [[nodiscard]] std::string_view                getMethod() const;
+    [[nodiscard]] std::string_view                getUrl() const;
+    [[nodiscard]] std::optional<std::string_view> getHeader(std::string_view key) const;
+    [[nodiscard]] HttpHeaders                     getHeaders() const;
 
 private:
-    HttpRequest(const Method& method, const Url& url, std::unordered_map<std::string_view, std::string_view> headers);
+    HttpRequest(const Method& method, const Url& url, HttpHeaders headers);
 
-    std::string_view                                       m_method;
-    std::string_view                                       m_url;
-    std::unordered_map<std::string_view, std::string_view> m_headers;
+    std::string_view m_method;
+    std::string_view m_url;
+    HttpHeaders      m_headers;
 };
 
 class HttpRequest::Method
@@ -53,7 +54,7 @@ public:
     HttpRequest build();
 
 private:
-    std::string_view                                       m_method;
-    std::string_view                                       m_url;
-    std::unordered_map<std::string_view, std::string_view> m_headers;
+    std::string_view m_method;
+    std::string_view m_url;
+    HttpHeaders      m_headers;
 };

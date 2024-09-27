@@ -2,9 +2,7 @@
 
 #include "SocketException.hpp"
 
-HttpRequest::HttpRequest(const Method&                                          method,
-                         const Url&                                             url,
-                         std::unordered_map<std::string_view, std::string_view> headers)
+HttpRequest::HttpRequest(const Method& method, const Url& url, HttpHeaders headers)
     : m_method(method.value()), m_url(url.value()), m_headers(std::move(headers))
 {
     if (m_method.empty() || m_url.empty())
@@ -33,7 +31,7 @@ std::optional<std::string_view> HttpRequest::getHeader(std::string_view key) con
     return std::nullopt;
 }
 
-std::unordered_map<std::string_view, std::string_view> HttpRequest::getHeaders() const
+HttpHeaders HttpRequest::getHeaders() const
 {
     return m_headers;
 }

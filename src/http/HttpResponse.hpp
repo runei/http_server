@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_map>
 
+#include "Definitions.hpp"
 #include "HttpStatusCode.hpp"
 
 class HttpResponse
@@ -13,13 +14,11 @@ public:
     [[nodiscard]] std::string buildResponse() const;
 
 private:
-    HttpStatusCode                                         m_status_code;
-    std::unordered_map<std::string_view, std::string_view> m_headers;
-    std::string_view                                       m_body;
+    HttpStatusCode   m_status_code;
+    HttpHeaders      m_headers;
+    std::string_view m_body;
 
-    HttpResponse(HttpStatusCode                                         status_code,
-                 std::unordered_map<std::string_view, std::string_view> headers,
-                 std::string_view                                       body);
+    HttpResponse(HttpStatusCode status_code, HttpHeaders headers, std::string_view body);
 };
 
 class HttpResponse::Builder
@@ -31,7 +30,7 @@ public:
     HttpResponse build() const;
 
 private:
-    HttpStatusCode                                         m_status_code{HttpStatusCode::OK};
-    std::unordered_map<std::string_view, std::string_view> m_headers;
-    std::string_view                                       m_body;
+    HttpStatusCode   m_status_code{HttpStatusCode::OK};
+    HttpHeaders      m_headers;
+    std::string_view m_body;
 };
