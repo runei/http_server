@@ -4,57 +4,37 @@
 #include <string>
 
 #include "Definitions.hpp"
+#include "Method.hpp"
 
 class HttpRequest
 {
 public:
-    class Method;
-    class Url;
     class Builder;
 
-    [[nodiscard]] std::string_view                getMethod() const;
+    [[nodiscard]] Method                          getMethod() const;
     [[nodiscard]] std::string_view                getUrl() const;
     [[nodiscard]] std::optional<std::string_view> getHeader(std::string_view key) const;
     [[nodiscard]] HttpHeaders                     getHeaders() const;
 
 private:
-    HttpRequest(const Method& method, const Url& url, HttpHeaders headers);
+    HttpRequest(const Method& method, std::string_view url, HttpHeaders headers);
 
-    std::string_view m_method;
+    Method           m_method;
     std::string_view m_url;
     HttpHeaders      m_headers;
-};
-
-class HttpRequest::Method
-{
-public:
-    explicit Method(std::string_view method) : m_method(method) {}
-    [[nodiscard]] std::string_view value() const { return m_method; }
-
-private:
-    std::string_view m_method;
-};
-
-class HttpRequest::Url
-{
-public:
-    explicit Url(std::string_view url) : m_url(url) {}
-    [[nodiscard]] std::string_view value() const { return m_url; }
-
-private:
-    std::string_view m_url;
 };
 
 class HttpRequest::Builder
 {
 public:
+    Builder() = default;
     Builder&    setMethod(std::string_view method);
     Builder&    setUrl(std::string_view url);
     Builder&    addHeader(std::string_view key, std::string_view value);
     HttpRequest build();
 
 private:
-    std::string_view m_method;
+    Method           m_method{Method::NotSupported};
     std::string_view m_url;
     HttpHeaders      m_headers;
 };

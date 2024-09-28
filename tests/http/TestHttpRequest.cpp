@@ -1,6 +1,7 @@
 #include "CppUTest/TestHarness.h"
 
 #include "HttpRequest.hpp"
+#include "Method.hpp"
 #include "SocketException.hpp"
 
 TEST_GROUP (HttpRequestTest)
@@ -12,14 +13,15 @@ TEST_GROUP (HttpRequestTest)
 TEST (HttpRequestTest, ConstructHttpRequestWithValidMethodAndUrl)
 {
     // Arrange
-    std::string_view method = "GET";
-    std::string_view url    = "/index.html";
+    std::string_view method          = "GET";
+    std::string_view url             = "/index.html";
+    Method           expected_method = Method::Get;
 
     // Act
     HttpRequest request = HttpRequest::Builder().setMethod(method).setUrl(url).build();
 
     // Assert
-    STRCMP_EQUAL(method.data(), request.getMethod().data());
+    CHECK(expected_method == request.getMethod());
     STRCMP_EQUAL(url.data(), request.getUrl().data());
 }
 
@@ -33,13 +35,6 @@ TEST (HttpRequestTest, GetHeaderReturnsNulloptIfHeaderIsNotFound)
 
     // Assert
     CHECK_FALSE(missing_header.has_value());
-}
-
-TEST (HttpRequestTest, ThrowExceptionIfMethodOrUrlIsMissing)
-{
-    // Arrange-Act-Assert
-    CHECK_THROWS(SocketException, HttpRequest::Builder().setUrl("/index.html").build());
-    CHECK_THROWS(SocketException, HttpRequest::Builder().setMethod("GET").build());
 }
 
 TEST (HttpRequestTest, ConstructHttpRequestWithMultipleHeaders)

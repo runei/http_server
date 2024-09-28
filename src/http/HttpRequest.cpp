@@ -2,16 +2,12 @@
 
 #include "SocketException.hpp"
 
-HttpRequest::HttpRequest(const Method& method, const Url& url, HttpHeaders headers)
-    : m_method(method.value()), m_url(url.value()), m_headers(std::move(headers))
+HttpRequest::HttpRequest(const Method& method, std::string_view url, HttpHeaders headers)
+    : m_method(method), m_url(url), m_headers(std::move(headers))
 {
-    if (m_method.empty() || m_url.empty())
-    {
-        throw SocketException("HttpRequest: Method and URL must not be empty.");
-    }
 }
 
-std::string_view HttpRequest::getMethod() const
+Method HttpRequest::getMethod() const
 {
     return m_method;
 }
@@ -38,7 +34,7 @@ HttpHeaders HttpRequest::getHeaders() const
 
 HttpRequest::Builder& HttpRequest::Builder::setMethod(std::string_view method)
 {
-    m_method = method;
+    m_method = MethodHelper::getMethod(method);
     return *this;
 }
 
@@ -56,5 +52,5 @@ HttpRequest::Builder& HttpRequest::Builder::addHeader(std::string_view key, std:
 
 HttpRequest HttpRequest::Builder::build()
 {
-    return {Method(m_method), Url(m_url), m_headers};
+    return {m_method, m_url, m_headers};
 }
