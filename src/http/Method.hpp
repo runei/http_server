@@ -4,12 +4,12 @@
 #include <string>
 
 #include "HttpStatusCode.hpp"
-#include "Result.hpp"
 
 enum class Method
 {
     NotSupported,
-    Get
+    Get,
+    Post
 };
 
 class MethodHelper
@@ -28,5 +28,6 @@ public:
     }
 
 private:
-    static constexpr std::array<std::pair<std::string_view, Method>, 1> StringToMethodArray = {{{"GET", Method::Get}}};
+    static constexpr std::array<std::pair<std::string_view, Method>, 2> StringToMethodArray = {
+        {{"GET", Method::Get}, {"POST", Method::Post}}};
 };

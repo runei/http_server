@@ -152,6 +152,9 @@ CheckOptions:
   - key: readability-identifier-naming.FunctionCase
     value: camelBack
 
+  - key: readability-identifier-naming.FunctionParameterCase
+    value: lower_case
+
   # Naming convention for constants (PascalCase)
   - key: readability-identifier-naming.ConstantCase
     value: CamelCase

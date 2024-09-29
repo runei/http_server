@@ -81,7 +81,14 @@ cppcheck:
 # Run clang-tidy
 tidy:
 	@echo "Running clang-tidy..."
-	@for file in ${SRC_FILES}; do \
+
+	@if [ -n "$(FILE)" ]; then \
+		FILES=`find ${SRC_DIR} ${TESTS_DIR} -name "$(FILE)"`; \
+	else \
+		FILES="${SRC_FILES}"; \
+	fi; \
+	echo $$FILES; \
+	for file in $$FILES; do \
 		echo "Checking $$file..."; \
-		clang-tidy -p=build ${EXTRA_ARG} --extra-arg=-DCPPUTEST_MEM_LEAK_DETECTION_DISABLED $$file -- -std=c++20 || { echo 'clang-tidy failed on $$file'; }; \
+		clang-tidy -p=build ${EXTRA_ARG} --extra-arg=-DCPPUTEST_MEM_LEAK_DETECTION_DISABLED $$file -- -std=c++20 || { echo 'clang-tidy failed on $$file'; exit 1; }; \
 	done

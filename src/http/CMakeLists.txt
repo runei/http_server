@@ -46,5 +46,4 @@ target_include_directories(Method INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(
     Method
     INTERFACE HttpStatusCode
-              Result
 )

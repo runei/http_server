@@ -38,4 +38,5 @@ const std::array<std::pair<HttpStatusCode, std::string_view>, HttpStatusCodeHelp
         {HttpStatusCode::BadGateway, "502 Bad Gateway"},
         {HttpStatusCode::ServiceUnavailable, "503 Service Unavailable"},
         {HttpStatusCode::GatewayTimeout, "504 Gateway Timeout"},
+        {HttpStatusCode::HttpVersionNotSupported, "505 HTTP Version Not Supported"},
     }};

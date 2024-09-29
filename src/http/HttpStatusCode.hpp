@@ -29,11 +29,12 @@ enum class HttpStatusCode
     TooManyRequests      = 429,
 
     // 5xx Server Errors
-    InternalServerError = 500,
-    NotImplemented      = 501,
-    BadGateway          = 502,
-    ServiceUnavailable  = 503,
-    GatewayTimeout      = 504
+    InternalServerError     = 500,
+    NotImplemented          = 501,
+    BadGateway              = 502,
+    ServiceUnavailable      = 503,
+    GatewayTimeout          = 504,
+    HttpVersionNotSupported = 505
 };
 
 class HttpStatusCodeHelper
@@ -42,6 +43,6 @@ public:
     static std::string_view getHttpStatusDescription(HttpStatusCode code);
 
 private:
-    static constexpr size_t                                                                   NumberOfStatusCodes = 22;
+    static constexpr size_t                                                                   NumberOfStatusCodes = 23;
     static const std::array<std::pair<HttpStatusCode, std::string_view>, NumberOfStatusCodes> StatusCodeArray;
 };

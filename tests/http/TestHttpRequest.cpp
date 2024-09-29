@@ -13,22 +13,21 @@ TEST_GROUP (HttpRequestTest)
 TEST (HttpRequestTest, ConstructHttpRequestWithValidMethodAndUrl)
 {
     // Arrange
-    std::string_view method          = "GET";
-    std::string_view url             = "/index.html";
-    Method           expected_method = Method::Get;
+    Method           method = Method::Get;
+    std::string_view url    = "/index.html";
 
     // Act
     HttpRequest request = HttpRequest::Builder().setMethod(method).setUrl(url).build();
 
     // Assert
-    CHECK(expected_method == request.getMethod());
+    CHECK(method == request.getMethod());
     STRCMP_EQUAL(url.data(), request.getUrl().data());
 }
 
 TEST (HttpRequestTest, GetHeaderReturnsNulloptIfHeaderIsNotFound)
 {
     // Arrange
-    HttpRequest request = HttpRequest::Builder().setMethod("GET").setUrl("/index.html").build();
+    HttpRequest request = HttpRequest::Builder().setMethod(Method::Get).setUrl("/index.html").build();
 
     // Act
     std::optional<std::string_view> missing_header = request.getHeader("NonExistentHeader");
@@ -40,7 +39,7 @@ TEST (HttpRequestTest, GetHeaderReturnsNulloptIfHeaderIsNotFound)
 TEST (HttpRequestTest, ConstructHttpRequestWithMultipleHeaders)
 {
     // Arrange
-    std::string_view method = "POST";
+    Method           method = Method::Post;
     std::string_view url    = "/submit";
 
     // Act
