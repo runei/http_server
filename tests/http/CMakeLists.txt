@@ -31,3 +31,20 @@ target_link_libraries(
 )
 
 add_test(NAME TestHttpResponse COMMAND TestHttpResponse)
+
+# RequestParser
+add_executable(
+    TestRequestParser
+    TestRequestParser.cpp
+    ${CMAKE_TEST_MAIN}
+)
+
+target_link_libraries(
+    TestRequestParser
+    PRIVATE RequestParser
+            HttpStatusCode
+            CppUTest
+            CppUTestExt
+)
+
+add_test(NAME TestRequestParser COMMAND TestRequestParser)

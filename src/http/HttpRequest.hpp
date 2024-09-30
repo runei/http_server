@@ -4,6 +4,7 @@
 #include <string>
 
 #include "Definitions.hpp"
+#include "HttpVersion.hpp"
 #include "Method.hpp"
 
 class HttpRequest
@@ -11,16 +12,20 @@ class HttpRequest
 public:
     class Builder;
 
+    HttpRequest();
+
     [[nodiscard]] Method                          getMethod() const;
     [[nodiscard]] std::string_view                getUrl() const;
-    [[nodiscard]] std::optional<std::string_view> getHeader(std::string_view key) const;
+    [[nodiscard]] HttpVersion                     getHttpVersion() const;
+    [[nodiscard]] std::optional<std::string_view> getHeader(const std::string& key) const;
     [[nodiscard]] HttpHeaders                     getHeaders() const;
 
 private:
-    HttpRequest(const Method& method, std::string_view url, HttpHeaders headers);
+    HttpRequest(const Method& method, std::string_view url, HttpVersion http_version, HttpHeaders headers);
 
     Method           m_method;
     std::string_view m_url;
+    HttpVersion      m_http_version;
     HttpHeaders      m_headers;
 };
 
@@ -28,13 +33,16 @@ class HttpRequest::Builder
 {
 public:
     Builder() = default;
-    Builder&    setMethod(std::string_view method);
+    Builder&    setMethod(Method method);
     Builder&    setUrl(std::string_view url);
-    Builder&    addHeader(std::string_view key, std::string_view value);
+    Builder&    setHttpVersion(HttpVersion http_version);
+    Builder&    setHeaders(HttpHeaders headers);
+    Builder&    addHeader(const std::string& key, const std::string& value);
     HttpRequest build();
 
 private:
     Method           m_method{Method::NotSupported};
     std::string_view m_url;
+    HttpVersion      m_http_version{HttpVersion::NotSupported};
     HttpHeaders      m_headers;
 };

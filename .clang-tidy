@@ -19,13 +19,8 @@ Checks: >
   z3-*,
   c++20-*,
   misc-unused-variables,
-  -cppcoreguidelines-pro-bounds-array-to-pointer-decay,  # Disable strict pointer decay warnings
-  -cppcoreguidelines-owning-memory,                      # Disable owning memory check for flexibility
-  -cppcoreguidelines-no-malloc,                          # Allow manual memory management if needed
-  -cppcoreguidelines-avoid-non-const-global-variables,
   -modernize-use-trailing-return-type,
-  -cppcoreguidelines-special-member-functions,
-  -hicpp-special-member-functions,
+  -fuchsia-default-arguments-calls
 
 WarningsAsErrors: "*" # Treat all warnings as errors
 

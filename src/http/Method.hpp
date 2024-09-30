@@ -3,8 +3,6 @@
 #include <array>
 #include <string>
 
-#include "HttpStatusCode.hpp"
-
 enum class Method
 {
     NotSupported,

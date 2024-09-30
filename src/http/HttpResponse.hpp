@@ -5,6 +5,7 @@
 
 #include "Definitions.hpp"
 #include "HttpStatusCode.hpp"
+#include "HttpVersion.hpp"
 
 class HttpResponse
 {
@@ -14,22 +15,25 @@ public:
     [[nodiscard]] std::string buildResponse() const;
 
 private:
+    HttpVersion      m_http_version;
     HttpStatusCode   m_status_code;
     HttpHeaders      m_headers;
     std::string_view m_body;
 
-    HttpResponse(HttpStatusCode status_code, HttpHeaders headers, std::string_view body);
+    HttpResponse(HttpVersion http_version, HttpStatusCode status_code, HttpHeaders headers, std::string_view body);
 };
 
 class HttpResponse::Builder
 {
 public:
+    Builder&     setHttpVersion(HttpVersion http_version);
     Builder&     setStatusCode(HttpStatusCode status_code);
-    Builder&     addHeader(std::string_view key, std::string_view value);
+    Builder&     addHeader(const std::string& key, const std::string& value);
     Builder&     setBody(std::string_view body);
     HttpResponse build() const;
 
 private:
+    HttpVersion      m_http_version{HttpVersion::NotSupported};
     HttpStatusCode   m_status_code{HttpStatusCode::OK};
     HttpHeaders      m_headers;
     std::string_view m_body;

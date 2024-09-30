@@ -2,8 +2,10 @@
 
 #include "SocketException.hpp"
 
-HttpRequest::HttpRequest(const Method& method, std::string_view url, HttpHeaders headers)
-    : m_method(method), m_url(url), m_headers(std::move(headers))
+HttpRequest::HttpRequest() : m_method(Method::NotSupported), m_http_version(HttpVersion::NotSupported) {}
+
+HttpRequest::HttpRequest(const Method& method, std::string_view url, HttpVersion http_version, HttpHeaders headers)
+    : m_method(method), m_url(url), m_http_version(http_version), m_headers(std::move(headers))
 {
 }
 
@@ -17,7 +19,12 @@ std::string_view HttpRequest::getUrl() const
     return m_url;
 }
 
-std::optional<std::string_view> HttpRequest::getHeader(std::string_view key) const
+HttpVersion HttpRequest::getHttpVersion() const
+{
+    return m_http_version;
+}
+
+std::optional<std::string_view> HttpRequest::getHeader(const std::string& key) const
 {
     auto header = m_headers.find(key);
     if (header != m_headers.end())
@@ -32,9 +39,9 @@ HttpHeaders HttpRequest::getHeaders() const
     return m_headers;
 }
 
-HttpRequest::Builder& HttpRequest::Builder::setMethod(std::string_view method)
+HttpRequest::Builder& HttpRequest::Builder::setMethod(Method method)
 {
-    m_method = MethodHelper::getMethod(method);
+    m_method = method;
     return *this;
 }
 
@@ -44,7 +51,20 @@ HttpRequest::Builder& HttpRequest::Builder::setUrl(std::string_view url)
     return *this;
 }
 
-HttpRequest::Builder& HttpRequest::Builder::addHeader(std::string_view key, std::string_view value)
+HttpRequest::Builder& HttpRequest::Builder::setHttpVersion(HttpVersion http_version)
+{
+    m_http_version = http_version;
+    return *this;
+}
+
+HttpRequest::Builder& HttpRequest::Builder::setHeaders(HttpHeaders headers)
+{
+    m_headers = std::move(headers);
+
+    return *this;
+}
+
+HttpRequest::Builder& HttpRequest::Builder::addHeader(const std::string& key, const std::string& value)
 {
     m_headers.emplace(key, value);
     return *this;
@@ -52,5 +72,5 @@ HttpRequest::Builder& HttpRequest::Builder::addHeader(std::string_view key, std:
 
 HttpRequest HttpRequest::Builder::build()
 {
-    return {m_method, m_url, m_headers};
+    return {m_method, m_url, m_http_version, m_headers};
 }

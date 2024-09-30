@@ -14,7 +14,8 @@ TEST (HttpResponseTest, BuildFullHttpResponse)
     std::string_view expected = "HTTP/1.1 200 OK\nContent-Type: text/html\n\n<html><body>Hello, World!</body></html>";
 
     // Act
-    auto response = builder.setStatusCode(HttpStatusCode::OK)
+    auto response = builder.setHttpVersion(HttpVersion::Http11)
+                        .setStatusCode(HttpStatusCode::OK)
                         .addHeader("Content-Type", "text/html")
                         .setBody("<html><body>Hello, World!</body></html>")
                         .build();

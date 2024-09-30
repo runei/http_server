@@ -27,7 +27,8 @@ std::string buildHttpResponse(const std::string& content)
 
 void handleClient(int client_socket)
 {
-    std::array<char, 30000> buffer = {0};
+    static constexpr size_t      BufferSize = 30000;
+    std::array<char, BufferSize> buffer     = {0};
 
     ssize_t bytes_read = read(client_socket, buffer.data(), buffer.size());
 
@@ -47,6 +48,7 @@ void handleClient(int client_socket)
 
 int main()
 {
+    static constexpr size_t MaxNumOfSockets = 10;
     try
     {
         std::cout << "Running" << std::endl;
@@ -55,7 +57,7 @@ int main()
 
         socket_manager.createSocket(PORT);
 
-        socket_manager.listenSocket(10);
+        socket_manager.listenSocket(MaxNumOfSockets);
 
         std::cout << "Listening on port " << PORT << std::endl;
 

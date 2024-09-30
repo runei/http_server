@@ -11,6 +11,11 @@ public:
     SocketManager(const SocketManager&)            = delete;
     SocketManager& operator=(const SocketManager&) = delete;
 
+    SocketManager(SocketManager&&) noexcept            = delete;
+    SocketManager& operator=(SocketManager&&) noexcept = delete;
+
+    ~SocketManager() = default;
+
     static SocketManager&            getInstance();
     void                             createSocket(uint16_t port);
     void                             listenSocket(int n_connections);

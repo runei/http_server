@@ -43,7 +43,21 @@ add_library(
 
 target_include_directories(Method INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 
-target_link_libraries(
-    Method
-    INTERFACE HttpStatusCode
+# RequestParser
+add_library(
+    RequestParser
+    STATIC
+    RequestParser.cpp
 )
+
+target_include_directories(RequestParser PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_link_libraries(RequestParser PUBLIC HttpRequest)
+
+# HttpVersion
+add_library(
+    HttpVersion
+    INTERFACE
+)
+
+target_include_directories(HttpVersion INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
