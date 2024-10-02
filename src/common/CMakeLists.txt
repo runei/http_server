@@ -15,3 +15,17 @@ add_library(
 )
 
 target_include_directories(Definitions INTERFACE $(CMAKE_CURRENT_SOURCE_DIR))
+
+# Result
+add_library(
+    Result
+    INTERFACE
+)
+
+target_include_directories(Result INTERFACE $(CMAKE_CURRENT_SOURCE_DIR))
+
+target_link_libraries(
+    Result
+    INTERFACE SocketException
+              HttpStatusCode
+)

@@ -2,14 +2,16 @@
 
 #include <sstream>
 
-HttpStatusCode RequestParser::parse(const std::string& raw_request, HttpRequest& http_request)
+RequestParserResult RequestParser::parse(const std::string& raw_request)
 {
+    HttpRequest http_request;
+
     RequestLine request_line = extractRequestLine(raw_request);
 
     auto method = extractMethod(request_line);
     if (method == Method::NotSupported)
     {
-        return HttpStatusCode::MethodNotAllowed;
+        return RequestParserResult(HttpStatusCode::MethodNotAllowed);
     }
 
     auto url = extractUrl(request_line);
@@ -17,19 +19,19 @@ HttpStatusCode RequestParser::parse(const std::string& raw_request, HttpRequest&
     auto http_version = extractHttpVersion(request_line);
     if (http_version == HttpVersion::NotSupported)
     {
-        return HttpStatusCode::HttpVersionNotSupported;
+        return RequestParserResult(HttpStatusCode::HttpVersionNotSupported);
     }
 
     auto headers = extractHeaders(raw_request);
     if (headers.empty())
     {
-        return HttpStatusCode::BadRequest;
+        return RequestParserResult(HttpStatusCode::BadRequest);
     }
 
     http_request =
         HttpRequest::Builder().setMethod(method).setUrl(url).setHttpVersion(http_version).setHeaders(headers).build();
 
-    return HttpStatusCode::OK;
+    return RequestParserResult(http_request);
 }
 
 RequestLine RequestParser::extractRequestLine(const std::string& raw_request)

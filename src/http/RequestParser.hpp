@@ -3,15 +3,17 @@
 #include "HttpRequest.hpp"
 #include "HttpStatusCode.hpp"
 #include "HttpVersion.hpp"
+#include "Result.hpp"
 
 static constexpr size_t NumOfElementsInRequestLine = 3;
 
-using RequestLine = std::array<std::string, NumOfElementsInRequestLine>;
+using RequestLine         = std::array<std::string, NumOfElementsInRequestLine>;
+using RequestParserResult = Result<HttpRequest>;
 
 class RequestParser
 {
 public:
-    [[nodiscard]] static HttpStatusCode parse(const std::string& raw_request, HttpRequest& http_request);
+    [[nodiscard]] static RequestParserResult parse(const std::string& raw_request);
 
 private:
     static RequestLine extractRequestLine(const std::string& raw_request);
