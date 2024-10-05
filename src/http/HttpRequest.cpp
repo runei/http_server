@@ -4,8 +4,8 @@
 
 HttpRequest::HttpRequest() : m_method(Method::NotSupported), m_http_version(HttpVersion::NotSupported) {}
 
-HttpRequest::HttpRequest(const Method& method, std::string_view url, HttpVersion http_version, HttpHeaders headers)
-    : m_method(method), m_url(url), m_http_version(http_version), m_headers(std::move(headers))
+HttpRequest::HttpRequest(const Method& method, std::string url, HttpVersion http_version, HttpHeaders headers)
+    : m_method(method), m_url(std::move(url)), m_http_version(http_version), m_headers(std::move(headers))
 {
 }
 
@@ -14,7 +14,7 @@ Method HttpRequest::getMethod() const
     return m_method;
 }
 
-std::string_view HttpRequest::getUrl() const
+std::string HttpRequest::getUrl() const
 {
     return m_url;
 }
@@ -45,9 +45,9 @@ HttpRequest::Builder& HttpRequest::Builder::setMethod(Method method)
     return *this;
 }
 
-HttpRequest::Builder& HttpRequest::Builder::setUrl(std::string_view url)
+HttpRequest::Builder& HttpRequest::Builder::setUrl(std::string url)
 {
-    m_url = url;
+    m_url = std::move(url);
     return *this;
 }
 

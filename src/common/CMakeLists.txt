@@ -29,3 +29,13 @@ target_link_libraries(
     INTERFACE SocketException
               HttpStatusCode
 )
+
+# CommonFunctions
+add_library(
+    CommonFunctions
+    INTERFACE
+)
+
+target_include_directories(
+    CommonFunctions INTERFACE $(CMAKE_CURRENT_SOURCE_DIR)
+)

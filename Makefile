@@ -90,5 +90,5 @@ tidy:
 	echo $$FILES; \
 	for file in $$FILES; do \
 		echo "Checking $$file..."; \
-		clang-tidy -p=build ${EXTRA_ARG} --extra-arg=-DCPPUTEST_MEM_LEAK_DETECTION_DISABLED $$file -- -std=c++20 || { echo 'clang-tidy failed on $$file'; exit 1; }; \
+		clang-tidy -p build/ ${EXTRA_ARG} $$file || { echo 'clang-tidy failed on $$file'; exit 1; }; \
 	done

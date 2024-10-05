@@ -4,9 +4,12 @@ project(HTTPServer)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPPUTEST_MEM_LEAK_DETECTION_DISABLED -Wall -Wextra -Werror")
 set(CMAKE_TEST_MAIN "${CMAKE_SOURCE_DIR}/tests/main.cpp")
+
+add_compile_definitions(STATIC_DIR_PATH="${CMAKE_SOURCE_DIR}/static/")
 
 enable_testing()
 

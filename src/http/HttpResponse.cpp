@@ -2,11 +2,8 @@
 
 #include <sstream>
 
-HttpResponse::HttpResponse(HttpVersion      http_version,
-                           HttpStatusCode   status_code,
-                           HttpHeaders      headers,
-                           std::string_view body)
-    : m_http_version(http_version), m_status_code(status_code), m_headers(std::move(headers)), m_body(body)
+HttpResponse::HttpResponse(HttpVersion http_version, HttpStatusCode status_code, HttpHeaders headers, std::string body)
+    : m_http_version(http_version), m_status_code(status_code), m_headers(std::move(headers)), m_body(std::move(body))
 {
 }
 
@@ -48,9 +45,9 @@ HttpResponse::Builder& HttpResponse::Builder::addHeader(const std::string& key, 
     return *this;
 }
 
-HttpResponse::Builder& HttpResponse::Builder::setBody(std::string_view body)
+HttpResponse::Builder& HttpResponse::Builder::setBody(std::string body)
 {
-    m_body = body;
+    m_body = std::move(body);
     return *this;
 }
 

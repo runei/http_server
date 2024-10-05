@@ -59,7 +59,8 @@
         "text_encoding": "cpp",
         "cassert": "cpp",
         "sstream": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "fstream": "cpp"
     },
     "files.eol": "\n",
     "editor.wordWrap": "on",

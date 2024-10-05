@@ -14,16 +14,16 @@ TEST_GROUP (HttpRequestTest)
 TEST (HttpRequestTest, ConstructHttpRequestWithValidMethodAndUrl)
 {
     // Arrange
-    Method           method       = Method::Get;
-    std::string_view url          = "/index.html";
-    HttpVersion      http_version = HttpVersion::Http11;
+    Method      method       = Method::Get;
+    std::string url          = "/index.html";
+    HttpVersion http_version = HttpVersion::Http11;
 
     // Act
     HttpRequest request = HttpRequest::Builder().setMethod(method).setUrl(url).setHttpVersion(http_version).build();
 
     // Assert
     LONGS_EQUAL(method, request.getMethod());
-    STRCMP_EQUAL(url.data(), request.getUrl().data());
+    STRCMP_EQUAL(url.c_str(), request.getUrl().c_str());
     LONGS_EQUAL(http_version, request.getHttpVersion());
 }
 
@@ -42,9 +42,9 @@ TEST (HttpRequestTest, GetHeaderReturnsNulloptIfHeaderIsNotFound)
 TEST (HttpRequestTest, ConstructHttpRequestWithMultipleHeaders)
 {
     // Arrange
-    Method           method       = Method::Post;
-    std::string_view url          = "/submit";
-    HttpVersion      http_version = HttpVersion::Http11;
+    Method      method       = Method::Post;
+    std::string url          = "/submit";
+    HttpVersion http_version = HttpVersion::Http11;
 
     // Act
     HttpRequest request = HttpRequest::Builder()
