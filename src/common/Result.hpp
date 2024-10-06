@@ -16,7 +16,7 @@ public:
 
     [[nodiscard]] bool success() const { return std::holds_alternative<T>(m_variant); }
 
-    [[nodiscard]] T getResult() const
+    [[nodiscard]] T value() const
     {
         if (!success())
         {
@@ -25,7 +25,7 @@ public:
         return std::get<T>(m_variant);
     }
 
-    [[nodiscard]] HttpStatusCode getStatus() const
+    [[nodiscard]] HttpStatusCode status() const
     {
         if (success())
         {

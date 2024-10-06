@@ -60,7 +60,9 @@
         "cassert": "cpp",
         "sstream": "cpp",
         "map": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "codecvt": "cpp",
+        "iomanip": "cpp"
     },
     "files.eol": "\n",
     "editor.wordWrap": "on",

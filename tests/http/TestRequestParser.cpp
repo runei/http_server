@@ -16,9 +16,9 @@ TEST (RequestParserTest, ParseValidGetRequest)
     auto result = RequestParser::parse(raw_request);
 
     // Assert
-    LONGS_EQUAL(HttpStatusCode::OK, result.getStatus());
+    LONGS_EQUAL(HttpStatusCode::OK, result.status());
 
-    auto http_request = result.getResult();
+    auto http_request = result.value();
     LONGS_EQUAL(Method::Get, http_request.getMethod());
     STRCMP_EQUAL("/index.html", http_request.getUrl().data());
     LONGS_EQUAL(HttpVersion::Http11, http_request.getHttpVersion());
@@ -34,7 +34,7 @@ TEST (RequestParserTest, ParseInvalidMethod)
     auto result = RequestParser::parse(raw_request);
 
     // Assert
-    LONGS_EQUAL(HttpStatusCode::MethodNotAllowed, result.getStatus());
+    LONGS_EQUAL(HttpStatusCode::MethodNotAllowed, result.status());
 }
 
 TEST (RequestParserTest, ParseUnsupportedHttpVersion)
@@ -46,7 +46,7 @@ TEST (RequestParserTest, ParseUnsupportedHttpVersion)
     auto result = RequestParser::parse(raw_request);
 
     // Assert
-    LONGS_EQUAL(HttpStatusCode::HttpVersionNotSupported, result.getStatus());
+    LONGS_EQUAL(HttpStatusCode::HttpVersionNotSupported, result.status());
 }
 
 TEST (RequestParserTest, ParseMissingHeaders)
@@ -58,7 +58,7 @@ TEST (RequestParserTest, ParseMissingHeaders)
     auto result = RequestParser::parse(raw_request);
 
     // Assert
-    LONGS_EQUAL(HttpStatusCode::BadRequest, result.getStatus());
+    LONGS_EQUAL(HttpStatusCode::BadRequest, result.status());
 }
 
 TEST (RequestParserTest, ParseValidPostRequest)
@@ -70,9 +70,9 @@ TEST (RequestParserTest, ParseValidPostRequest)
     auto result = RequestParser::parse(raw_request);
 
     // Assert
-    LONGS_EQUAL(HttpStatusCode::OK, result.getStatus());
+    LONGS_EQUAL(HttpStatusCode::OK, result.status());
 
-    auto http_request = result.getResult();
+    auto http_request = result.value();
     LONGS_EQUAL(Method::Post, http_request.getMethod());
     STRCMP_EQUAL("/submit-form", http_request.getUrl().data());
     LONGS_EQUAL(HttpVersion::Http11, http_request.getHttpVersion());
