@@ -2,15 +2,15 @@
 
 #include <string>
 
-#include "FileResponseHandler.hpp"
+#include "FileRequestHandler.hpp"
 #include "HttpRequest.hpp"
 #include "HttpResponse.hpp"
 
-TEST_GROUP (FileResponseHandlerTests)
+TEST_GROUP (FileRequestHandlerTests)
 {
 };
 
-TEST (FileResponseHandlerTests, HandleRequest_Returns200OnValidFile)
+TEST (FileRequestHandlerTests, HandleRequest_Returns200OnValidFile)
 {
     // Arrange
     HttpRequest request =
@@ -20,13 +20,14 @@ TEST (FileResponseHandlerTests, HandleRequest_Returns200OnValidFile)
         "HTTP/1.1 200 OK\nContent-Length: 40\nContent-Type: text/html\n\n<html><body>Hello, World!</body></html>\n";
 
     // Act
-    HttpResponse response = FileResponseHandler::handleRequest(request);
+    FileRequestHandler request_handler;
+    HttpResponse       response = request_handler.handle(request);
 
     // Assert
     STRCMP_EQUAL(expected.data(), response.buildResponse().data());
 }
 
-TEST (FileResponseHandlerTests, HandleRequest_Returns404OnFileNotFound)
+TEST (FileRequestHandlerTests, HandleRequest_Returns404OnFileNotFound)
 {
     // Arrange
     HttpRequest request = HttpRequest::Builder()
@@ -39,7 +40,8 @@ TEST (FileResponseHandlerTests, HandleRequest_Returns404OnFileNotFound)
         "Found</title></head><body><h1>404 Not Found</h1><p>An error occurred: 404 Not Found</p></body></html>";
 
     // Act
-    HttpResponse response = FileResponseHandler::handleRequest(request);
+    FileRequestHandler request_handler;
+    HttpResponse       response = request_handler.handle(request);
 
     // Assert
     STRCMP_EQUAL(expected.data(), response.buildResponse().data());

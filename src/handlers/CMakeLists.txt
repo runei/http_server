@@ -13,19 +13,19 @@ target_link_libraries(
            HttpResponse
 )
 
-# FileResponseHandler
+# FileRequestHandler
 add_library(
-    FileResponseHandler
+    FileRequestHandler
     STATIC
-    FileResponseHandler.cpp
+    FileRequestHandler.cpp
 )
 
 target_include_directories(
-    FileResponseHandler PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+    FileRequestHandler PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 target_link_libraries(
-    FileResponseHandler
+    FileRequestHandler
     PUBLIC HttpStatusCode
            HttpResponse
            CommonFunctions

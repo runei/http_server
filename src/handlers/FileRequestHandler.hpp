@@ -2,11 +2,12 @@
 
 #include "HttpRequest.hpp"
 #include "HttpResponse.hpp"
+#include "IRequestHandler.hpp"
 
-class FileResponseHandler
+class FileRequestHandler : public IRequestHandler
 {
 public:
-    static HttpResponse handleRequest(const HttpRequest& request);
+    HttpResponse handle(const HttpRequest& request) override;
 
 private:
     static std::optional<std::string> readFileContents(const std::string& file_path);

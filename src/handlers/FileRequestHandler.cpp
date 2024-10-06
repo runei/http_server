@@ -1,4 +1,4 @@
-#include "FileResponseHandler.hpp"
+#include "FileRequestHandler.hpp"
 
 #include <fstream>
 #include <sstream>
@@ -7,7 +7,7 @@
 #include "Definitions.hpp"
 #include "ErrorHandler.hpp"
 
-HttpResponse FileResponseHandler::handleRequest(const HttpRequest& request)
+HttpResponse FileRequestHandler::handle(const HttpRequest& request)
 {
     std::string file_path = CommonFunctions::getStaticFolderPath() + request.getUrl();
 
@@ -27,7 +27,7 @@ HttpResponse FileResponseHandler::handleRequest(const HttpRequest& request)
     return builder.build();
 }
 
-std::optional<std::string> FileResponseHandler::readFileContents(const std::string& file_path)
+std::optional<std::string> FileRequestHandler::readFileContents(const std::string& file_path)
 {
     std::ifstream file(file_path, std::ios::in | std::ios::binary);
     if (!file)

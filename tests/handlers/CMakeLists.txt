@@ -1,17 +1,17 @@
-# FileResponseHandler
+# FileRequestHandler
 add_executable(
-    TestFileResponseHandler
-    TestFileResponseHandler.cpp
+    TestFileRequestHandler
+    TestFileRequestHandler.cpp
     ${CMAKE_TEST_MAIN}
 )
 
 target_link_libraries(
-    TestFileResponseHandler
-    PRIVATE FileResponseHandler
+    TestFileRequestHandler
+    PRIVATE FileRequestHandler
             HttpRequest
             HttpResponse
             CppUTest
             CppUTestExt
 )
 
-add_test(NAME TestFileResponseHandler COMMAND TestFileResponseHandler)
+add_test(NAME TestFileRequestHandler COMMAND TestFileRequestHandler)
