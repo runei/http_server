@@ -58,10 +58,10 @@ run:
 
 # Run tests
 test:
-	@if [ -n "$(TESTNAME)" ]; then \
-		TEST_PATH=$(shell find ${CMAKE_BUILD_DIR}/tests -name $(TESTNAME)); \
+	@if [ -n "$(FILE)" ]; then \
+		TEST_PATH=$(shell find ${CMAKE_BUILD_DIR}/tests -name $(FILE)); \
 		if [ -z "$$TEST_PATH" ]; then \
-			echo "Test executable $(TESTNAME) not found"; \
+			echo "Test executable $(FILE) not found"; \
 			exit 1; \
 		fi; \
 		$$TEST_PATH -v || { echo 'Tests failed'; exit 1; }; \

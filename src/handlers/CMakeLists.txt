@@ -31,3 +31,35 @@ target_link_libraries(
            CommonFunctions
            ErrorHandler
 )
+
+# IRequestHandler
+add_library(
+    IRequestHandler
+    INTERFACE
+)
+
+target_include_directories(
+    IRequestHandler INTERFACE $(CMAKE_CURRENT_SOURCE_DIR)
+)
+
+target_link_libraries(
+    IRequestHandler
+    INTERFACE HttpResponse
+              HttpRequest
+)
+
+# RequestDispatcher
+add_library(
+    RequestDispatcher
+    STATIC
+    RequestDispatcher.cpp
+)
+
+target_include_directories(RequestDispatcher PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_link_libraries(
+    RequestDispatcher
+    PUBLIC RequestParser
+           IRequestHandler
+           ErrorHandler
+)

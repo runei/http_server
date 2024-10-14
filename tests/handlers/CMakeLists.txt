@@ -15,3 +15,20 @@ target_link_libraries(
 )
 
 add_test(NAME TestFileRequestHandler COMMAND TestFileRequestHandler)
+
+# RequestDispatcher
+add_executable(
+    TestRequestDispatcher
+    TestRequestDispatcher.cpp
+    ${CMAKE_TEST_MAIN}
+)
+
+target_link_libraries(
+    TestRequestDispatcher
+    PRIVATE RequestDispatcher
+            IRequestHandler
+            CppUTest
+            CppUTestExt
+)
+
+add_test(NAME TestRequestDispatcher COMMAND TestRequestDispatcher)
