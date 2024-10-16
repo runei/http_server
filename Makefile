@@ -76,7 +76,7 @@ format:
 
 # Run cppcheck with error checking
 cppcheck:
-	@cppcheck --enable=all ${INCLUDE_PATHS} --error-exitcode=1 --suppress=missingIncludeSystem --inconclusive ${SRC_FILES} || { echo 'cppcheck failed'; exit 1; }
+	@cppcheck --project=${CMAKE_BUILD_DIR}/compile_commands.json --enable=all ${INCLUDE_PATHS} --error-exitcode=1 --suppress=missingInclude --inconclusive ${SRC_FILES} || { echo 'cppcheck failed'; exit 1; }
 
 # Run clang-tidy
 tidy:

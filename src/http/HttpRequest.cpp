@@ -34,11 +34,6 @@ std::optional<std::string_view> HttpRequest::getHeader(const std::string& key) c
     return std::nullopt;
 }
 
-HttpHeaders HttpRequest::getHeaders() const
-{
-    return m_headers;
-}
-
 HttpRequest::Builder& HttpRequest::Builder::setMethod(Method method)
 {
     m_method = method;
