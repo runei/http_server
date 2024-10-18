@@ -28,6 +28,7 @@ target_link_libraries(
     Result
     INTERFACE SocketException
               HttpStatusCode
+              Definitions
 )
 
 # CommonFunctions

@@ -28,6 +28,7 @@ private:
     void               bindSocket(uint16_t port);
     void               setAddress(uint16_t port);
     [[nodiscard]] bool isSocketCreated() const;
+    void               setReusableAddress();
 
     static constexpr int InactiveServer = -1;
 

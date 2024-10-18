@@ -4,6 +4,7 @@
 
 #include <memory>
 
+#include "Definitions.hpp"
 #include "IRequestHandler.hpp"
 #include "RequestDispatcher.hpp"
 
@@ -51,7 +52,7 @@ public:
 
 TEST_GROUP (RequestDispatcherTest)
 {
-    static constexpr size_t BufferSize = 4096;
+    static constexpr size_t UIntBufferSize = static_cast<size_t>(BufferSize);
 
     void teardown() override
     {

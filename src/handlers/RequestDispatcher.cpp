@@ -38,8 +38,6 @@ void RequestDispatcher::handleRequest(int client_socket)
 
 std::string RequestDispatcher::readFromSocket(int client_socket)
 {
-    static constexpr int BufferSize = 4096;
-
     std::array<char, BufferSize> buffer{};
     std::string                  raw_request;
 

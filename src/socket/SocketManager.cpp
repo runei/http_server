@@ -27,6 +27,8 @@ void SocketManager::createSocket(uint16_t port)
         throw SocketException("SocketManager: Failed to create socket", errno);
     }
 
+    setReusableAddress();
+
     bindSocket(port);
 }
 
@@ -50,16 +52,30 @@ void SocketManager::listenSocket(int n_connections)
         throw SocketException("SocketManager: Socket not created yet");
     }
 
-    sockaddr_in client_address{};
-    socklen_t   client_len = sizeof(client_address);
+    fd_set read_fd;
+    FD_ZERO(&read_fd);
+    FD_SET(m_server_socket, &read_fd);
 
-    int client_socket = accept(m_server_socket, std::bit_cast<sockaddr*>(&client_address), &client_len);
-    if (client_socket < 0)
+    timeval timeout{};
+    timeout.tv_sec = 1;
+
+    int activity = select(m_server_socket + 1, &read_fd, nullptr, nullptr, &timeout);
+
+    if (activity > 0 && FD_ISSET(m_server_socket, &read_fd))
     {
-        return std::nullopt;
+        sockaddr_in client_address{};
+        socklen_t   client_len = sizeof(client_address);
+
+        int client_socket = accept(m_server_socket, std::bit_cast<sockaddr*>(&client_address), &client_len);
+        if (client_socket < 0)
+        {
+            return std::nullopt;
+        }
+
+        return client_socket;
     }
 
-    return client_socket;
+    return std::nullopt;
 }
 
 void SocketManager::closeSocket()
@@ -95,4 +111,14 @@ void SocketManager::setAddress(uint16_t port)
 [[nodiscard]] bool SocketManager::isSocketCreated() const
 {
     return m_server_socket != InactiveServer;
+}
+
+void SocketManager::setReusableAddress()
+{
+    int opt = 1;
+    if (setsockopt(m_server_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
+    {
+        closeSocket();
+        throw SocketException("Failed to set SO_REUSEADDR option", errno);
+    }
 }

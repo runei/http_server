@@ -62,7 +62,8 @@
         "map": "cpp",
         "fstream": "cpp",
         "codecvt": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "condition_variable": "cpp"
     },
     "files.eol": "\n",
     "editor.wordWrap": "on",

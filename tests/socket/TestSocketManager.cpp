@@ -33,6 +33,7 @@ void simulateClientConnection(uint16_t port)
 TEST_GROUP (SocketManagerTest)
 {
     static constexpr int NumberConnections = 10;
+    static constexpr int Port              = 8080;
 
     void setup() override {}
 
@@ -45,7 +46,6 @@ TEST_GROUP (SocketManagerTest)
 TEST (SocketManagerTest, CreateSocket)
 {
     // Arrange
-    const uint16_t Port           = 8080;
     SocketManager& socket_manager = SocketManager::getInstance();
 
     // Act & Assert
@@ -63,7 +63,6 @@ TEST (SocketManagerTest, CreateSocket)
 TEST (SocketManagerTest, CreateSocketWhenAlreadyCreated)
 {
     // Arrange
-    const uint16_t Port           = 8081;
     SocketManager& socket_manager = SocketManager::getInstance();
     socket_manager.createSocket(Port);
 
@@ -74,7 +73,6 @@ TEST (SocketManagerTest, CreateSocketWhenAlreadyCreated)
 TEST (SocketManagerTest, ListenSocket)
 {
     // Arrange
-    const uint16_t Port           = 8082;
     SocketManager& socket_manager = SocketManager::getInstance();
     socket_manager.createSocket(Port);
 
@@ -93,7 +91,6 @@ TEST (SocketManagerTest, ListenSocket)
 TEST (SocketManagerTest, AcceptConnection)
 {
     // Arrange
-    const uint16_t Port           = 8083;
     SocketManager& socket_manager = SocketManager::getInstance();
     socket_manager.createSocket(Port);
     socket_manager.listenSocket(NumberConnections);
@@ -122,7 +119,6 @@ TEST (SocketManagerTest, AcceptConnection)
 TEST (SocketManagerTest, CloseSocket)
 {
     // Arrange
-    const uint16_t Port           = 8084;
     SocketManager& socket_manager = SocketManager::getInstance();
     socket_manager.createSocket(Port);
 

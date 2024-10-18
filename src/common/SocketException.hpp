@@ -5,6 +5,8 @@
 #include <sstream>
 #include <stdexcept>
 
+#include "Definitions.hpp"
+
 class SocketException : public std::runtime_error
 {
 public:
@@ -18,7 +20,6 @@ public:
 private:
     static std::string buildErrorMessage(std::string_view message, int error_number)
     {
-        static constexpr size_t      BufferSize = 256;
         std::array<char, BufferSize> buffer{};
 
         // GNU version of strerror_r returns char*

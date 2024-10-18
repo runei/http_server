@@ -27,6 +27,7 @@ target_link_libraries(
     TestRequestDispatcher
     PRIVATE RequestDispatcher
             IRequestHandler
+            Definitions
             CppUTest
             CppUTestExt
 )
