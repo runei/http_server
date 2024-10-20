@@ -6,7 +6,7 @@ CMAKE_BUILD_DIR=${CMAKE_SOURCE_DIR}/build
 CMAKE_COVERAGE_DIR=${CMAKE_BUILD_DIR}/coverage
 
 SRC_DIR=${CMAKE_SOURCE_DIR}/src
-TESTS_DIR=${CMAKE_SOURCE_DIR}/tests
+TESTS_DIR=${CMAKE_SOURCE_DIR}/tests/ut
 
 SRC_FILES=$(shell find ${SRC_DIR} ${TESTS_DIR} -name "*.cpp" -o -name "*.hpp")
 INCLUDE_PATHS=$(shell find ${SRC_DIR} -type d -exec echo -I{} \; | tr '\n' ' ')
@@ -61,7 +61,7 @@ run:
 # Run tests
 test:
 	@if [ -n "$(FILE)" ]; then \
-		TEST_PATH=$(shell find ${CMAKE_BUILD_DIR}/tests -name $(FILE)); \
+		TEST_PATH=$(shell find ${CMAKE_BUILD_DIR}/tests/ut -name $(FILE)); \
 		if [ -z "$$TEST_PATH" ]; then \
 			echo "Test executable $(FILE) not found"; \
 			exit 1; \
