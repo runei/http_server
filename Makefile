@@ -40,11 +40,13 @@ coverage: clean
 	@$(MAKE) build BUILD_TYPE=Coverage
 	@echo "Running tests for coverage"
 	@$(MAKE) test
-	@echo "Generating coverage report using gcov"
-	@find ${CMAKE_BUILD_DIR} -name "*.gcno" -exec gcov {} \; || { echo 'gcov failed'; exit 1; }
-	@echo "Moving coverage reports to ${CMAKE_COVERAGE_DIR}"
-	@find . -name "*.gcov" -exec mv {} ${CMAKE_COVERAGE_DIR} \;
-	@echo "Coverage report generated in ${CMAKE_COVERAGE_DIR}"
+	@echo "Capturing initial coverage"
+	@lcov --capture --directory ${CMAKE_BUILD_DIR} --output-file ${CMAKE_COVERAGE_DIR}/coverage.info
+	@echo "Filtering out system and external library files"
+	@lcov --remove ${CMAKE_COVERAGE_DIR}/coverage.info '/usr/*' '*/external/*' --output-file ${CMAKE_COVERAGE_DIR}/coverage_filtered.info
+	@echo "Generating coverage report"
+	@genhtml ${CMAKE_COVERAGE_DIR}/coverage_filtered.info --output-directory ${CMAKE_COVERAGE_DIR}/report
+	@echo "Coverage report generated in ${CMAKE_COVERAGE_DIR}/report"
 
 # Clean build directory
 clean:

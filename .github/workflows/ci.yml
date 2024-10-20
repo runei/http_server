@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake cppcheck valgrind clang-tidy cpputest gcovr
+          sudo apt-get install -y build-essential cmake cppcheck valgrind clang-tidy cpputest lcov
 
       - name: Build
         run: make build
@@ -53,7 +53,7 @@ jobs:
           make clean
           make coverage
 
-          gcovr -r . --fail-under-line 80 --html --html-details -o coverage.html
+          lcov --summary build/coverage/coverage_filtered.info | grep -q "lines.*: 80.0%" || { echo "Code coverage is below 80%"; exit 1; }
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
