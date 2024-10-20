@@ -42,8 +42,8 @@ coverage: clean
 	@$(MAKE) test
 	@echo "Capturing initial coverage"
 	@lcov --capture --directory ${CMAKE_BUILD_DIR} --output-file ${CMAKE_COVERAGE_DIR}/coverage.info
-	@echo "Filtering out system and external library files"
-	@lcov --remove ${CMAKE_COVERAGE_DIR}/coverage.info '/usr/*' '*/external/*' --output-file ${CMAKE_COVERAGE_DIR}/coverage_filtered.info
+	@echo "Filtering out system, external library files, and unit tests"
+	@lcov --remove ${CMAKE_COVERAGE_DIR}/coverage.info '/usr/*' '*/external/*' '*/tests/*' --output-file ${CMAKE_COVERAGE_DIR}/coverage_filtered.info
 	@echo "Generating coverage report"
 	@genhtml ${CMAKE_COVERAGE_DIR}/coverage_filtered.info --output-directory ${CMAKE_COVERAGE_DIR}/report
 	@echo "Coverage report generated in ${CMAKE_COVERAGE_DIR}/report"
