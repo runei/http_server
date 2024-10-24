@@ -10,7 +10,7 @@
         "C_Cpp.default.compilerPath": "/usr/bin/g++",
         "C_Cpp.default.includePath": [
           "${workspaceFolder}/src/**",
-          "${workspaceFolder}/tests/ut/**",
+          "${workspaceFolder}/tests/**",
           "/usr/include"
         ]
       },

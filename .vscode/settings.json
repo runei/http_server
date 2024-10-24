@@ -63,7 +63,8 @@
         "fstream": "cpp",
         "codecvt": "cpp",
         "iomanip": "cpp",
-        "condition_variable": "cpp"
+        "condition_variable": "cpp",
+        "mutex": "cpp"
     },
     "files.eol": "\n",
     "editor.wordWrap": "on",

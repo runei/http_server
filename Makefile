@@ -1,12 +1,14 @@
 #!/bin/bash
 
 BUILD_TYPE=${1:-Release}
+BUILD_SCT=OFF
 CMAKE_SOURCE_DIR=$(shell pwd)
 CMAKE_BUILD_DIR=${CMAKE_SOURCE_DIR}/build
 CMAKE_COVERAGE_DIR=${CMAKE_BUILD_DIR}/coverage
 
 SRC_DIR=${CMAKE_SOURCE_DIR}/src
 TESTS_DIR=${CMAKE_SOURCE_DIR}/tests/ut
+SCT_DIR=${CMAKE_SOURCE_DIR}/tests/sct
 
 SRC_FILES=$(shell find ${SRC_DIR} ${TESTS_DIR} -name "*.cpp" -o -name "*.hpp")
 INCLUDE_PATHS=$(shell find ${SRC_DIR} -type d -exec echo -I{} \; | tr '\n' ' ')
@@ -23,13 +25,19 @@ build:
 	@mkdir -p ${CMAKE_BUILD_DIR}
 	@mkdir -p ${CMAKE_COVERAGE_DIR}
 	@echo "Running CMake with build type: ${BUILD_TYPE}"
-	@cd ${CMAKE_BUILD_DIR} && cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${CMAKE_SOURCE_DIR} || { echo 'CMake failed'; exit 1; }
+	@cd ${CMAKE_BUILD_DIR} && cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DBUILD_SCT=${BUILD_SCT} ${CMAKE_SOURCE_DIR} || { echo 'CMake failed'; exit 1; }
 	@echo "Building project"
 	@cd ${CMAKE_BUILD_DIR} && make || { echo 'Build failed'; exit 1; }
+
+build-sct:
+	$(MAKE) build BUILD_SCT=ON
 
 # Debug and release builds
 debug:
 	@$(MAKE) build BUILD_TYPE=Debug
+
+debug-sct:
+	@$(MAKE) debug BUILD_SCT=ON
 
 release:
 	@$(MAKE) build BUILD_TYPE=Release
@@ -74,7 +82,7 @@ test:
 # Format CMake files
 format:
 	@echo "Formatting files"
-	@find ${SRC_DIR} ${TESTS_DIR} -name "CMakeLists.txt" -exec cmake-format -i {} \;
+	@find ${SRC_DIR} ${TESTS_DIR} ${SCT_DIR} -name "CMakeLists.txt" -exec cmake-format -i {} \;
 
 # Run cppcheck with error checking
 cppcheck:
@@ -85,7 +93,7 @@ tidy:
 	@echo "Running clang-tidy..."
 
 	@if [ -n "$(FILE)" ]; then \
-		FILES=`find ${SRC_DIR} ${TESTS_DIR} -name "$(FILE)"`; \
+		FILES=`find ${SRC_DIR} ${TESTS_DIR} ${SCT_DIR} -name "$(FILE)"`; \
 	else \
 		FILES="${SRC_FILES}"; \
 	fi; \
