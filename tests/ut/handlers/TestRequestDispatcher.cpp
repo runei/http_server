@@ -135,15 +135,15 @@ TEST (RequestDispatcherTest, HandleRequest_LargeRequest)
     // Arrange
     RequestDispatcher dispatcher{std::make_unique<DummyRequestHandler>()};
     int               client_socket = 1;
-    constexpr size_t  TotalSize     = 5000;
+    constexpr size_t  TotalSize     = BufferSize + (BufferSize / 2);
 
-    // Simulate a request larger than 4096 bytes (let's use 5000 bytes as an example)
+    // Simulate a request larger than Buffersize bytes (let's use 5000 bytes as an example)
     std::string init_request      = "GET /index.html HTTP/1.1\r\nHost: localhost\r\n\r\n";
     std::string raw_request_part1 = init_request + std::string(BufferSize - init_request.size(), 'A');
     std::string raw_request_part2(TotalSize - BufferSize, 'B');
     std::string expected_response = "HTTP/1.1 200 OK\n\n";
 
-    // First recv call to return the first 4096 bytes
+    // First recv call to return the first Buffersize bytes
     mock()
         .expectOneCall("recv")
         .withParameter("sock_fd", client_socket)
