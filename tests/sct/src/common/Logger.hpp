@@ -16,12 +16,14 @@ public:
     virtual ~Logger();
 
     static Logger& getInstance();
-    static void    destroyInstance(); // Made for testing
 
     void log(const std::string& message, const std::string& level);
     void logInfo(const std::string& message);
     void logSuccess(const std::string& message);
     void logError(const std::string& message);
+
+    void disableFileOutput();
+    void close();
 
 protected:
     Logger();

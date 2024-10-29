@@ -13,10 +13,7 @@ Logger::Logger()
 
 Logger::~Logger()
 {
-    if (m_log_file.is_open())
-    {
-        m_log_file.close();
-    }
+    close();
 }
 
 Logger& Logger::getInstance()
@@ -45,6 +42,19 @@ void Logger::logSuccess(const std::string& message)
 void Logger::logError(const std::string& message)
 {
     log(message, "ERROR");
+}
+
+void Logger::disableFileOutput()
+{
+    close();
+}
+
+void Logger::close()
+{
+    if (m_log_file.is_open())
+    {
+        m_log_file.close();
+    }
 }
 
 void Logger::writeToFile(const std::string& message)
