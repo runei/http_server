@@ -25,13 +25,10 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake cppcheck valgrind clang-tidy cpputest lcov
+          sudo apt-get install -y build-essential clang-format cmake cmake-format cpputest cppcheck clang-tidy valgrind lcov
 
       - name: Build
         run: make build
-
-      - name: Run Unit Tests
-        run: make test
 
       - name: Run Cppcheck (Static Code Analysis)
         run: make cppcheck
@@ -39,14 +36,17 @@ jobs:
       - name: Run Clang-Tidy (Linting)
         run: make tidy
 
-      - name: Run Valgrind (Memory Leak Detection)
-        if: matrix.build_type == 'Debug'
-        run: valgrind --leak-check=full ./build/src/Main
-
       - name: Check Code Formatting with Clang-Format
         run: |
           clang-format --version
           find ./src -name '*.cpp' -o -name '*.hpp' | xargs clang-format -style=file --dry-run -Werror
+
+      - name: Run Valgrind on TestServer
+        if: matrix.build_type == 'Debug'
+        run: valgrind --leak-check=full --track-origins=yes ./build/tests/ut/server/TestServer
+
+      - name: Run Unit Tests
+        run: make test
 
       - name: Generate Coverage Report and Enforce 80% Threshold
         run: |

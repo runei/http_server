@@ -18,5 +18,11 @@ public:
     [[nodiscard]] std::string getResponse() const;
 
 private:
+    bool setNonBlockingMode();
+    bool connectSocket(const std::string& ip_address, int port);
+    void closeSocket();
+
+    static constexpr useconds_t PollIntervalMicroseconds = 100;
+
     int m_sock_fd{-1};
 };

@@ -28,7 +28,7 @@ private:
 
     uint16_t                m_port;
     RequestDispatcher       m_dispatcher;
-    bool                    m_is_running{false};
+    std::atomic<bool>       m_is_running{false};
     std::mutex              m_mutex;
     std::condition_variable m_condition;
 

@@ -11,7 +11,7 @@ Server::Server(uint16_t port) : m_port(port), m_dispatcher(std::make_unique<File
 
 Server::~Server()
 {
-    SocketManager::getInstance().closeSocket();
+    stop();
 }
 
 void Server::start()

@@ -4,6 +4,7 @@
 
 #include <bit>
 
+#include <poll.h>
 #include <unistd.h>
 
 #include "SocketException.hpp"
@@ -52,16 +53,13 @@ void SocketManager::listenSocket(int n_connections)
         throw SocketException("SocketManager: Socket not created yet");
     }
 
-    fd_set read_fd;
-    FD_ZERO(&read_fd);
-    FD_SET(m_server_socket, &read_fd);
+    struct pollfd fds;
+    fds.fd     = m_server_socket;
+    fds.events = POLLIN;
 
-    timeval timeout{};
-    timeout.tv_sec = 1;
+    int ret = poll(&fds, 1, 2000);
 
-    int activity = select(m_server_socket + 1, &read_fd, nullptr, nullptr, &timeout);
-
-    if (activity > 0 && FD_ISSET(m_server_socket, &read_fd))
+    if (ret > 0 && (fds.events & POLLIN))
     {
         sockaddr_in client_address{};
         socklen_t   client_len = sizeof(client_address);
