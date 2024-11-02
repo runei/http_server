@@ -6,40 +6,39 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPPUTEST_MEM_LEAK_DETECTION_DISABLED -Wall -Wextra -pedantic -Werror")
+include(CTest)
 set(CMAKE_TEST_MAIN "${CMAKE_SOURCE_DIR}/tests/ut/main.cpp")
 
-add_compile_definitions(STATIC_DIR_PATH="${CMAKE_SOURCE_DIR}/static/")
-
-enable_testing()
-
-# Set default build type if not specified
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
 endif()
 
-# Release flags (optimizations, no debug symbols)
+add_compile_options(-Wall -Wextra -pedantic -Werror)
+
+add_compile_definitions(
+    STATIC_DIR_PATH="${CMAKE_SOURCE_DIR}/static/"
+    CPPUTEST_MEM_LEAK_DETECTION_DISABLED
+)
+
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     message("Building in Release mode with optimizations")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -DNDEBUG")
-endif()
-
-# Debug flags (no optimizations, debug symbols)
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_options(-O3 -DNDEBUG)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
     message("Building in Debug mode with debug symbols")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fsanitize=address -fsanitize=undefined")
-endif()
-
-# Unit test coverage flags
-if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
+    add_compile_options(-g -O0 -fsanitize=address -fsanitize=undefined)
+    add_link_options(-fsanitize=address -fsanitize=undefined)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Coverage")
     message("Enabling coverage options")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+    add_compile_options(-fprofile-arcs -ftest-coverage)
+    add_link_options(--coverage)
 endif()
 
-if (NOT BUILD_SCT)
+# Option to build system tests
+option(BUILD_SCT "Build system tests" OFF)
+
+if(NOT BUILD_SCT)
     add_subdirectory(src)
     add_subdirectory(tests/ut)
-else ()
+else()
     add_subdirectory(tests/sct)
 endif()

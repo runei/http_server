@@ -9,12 +9,17 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-and-test:
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         compiler: [gcc, clang]
         build_type: [Debug, Release]
+        include:
+          - compiler: gcc
+            coverage: true
+          - compiler: clang
+            coverage: false
     env:
       CXXFLAGS: "-Wall -Wextra -Werror -std=c++20"
 
@@ -22,13 +27,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set compiler environment variables
+        run: |
+          if [ "${{ matrix.compiler }}" == "gcc" ]; then
+            export CC=gcc
+            export CXX=g++
+          elif [ "${{ matrix.compiler }}" == "clang" ]; then
+            export CC=clang
+            export CXX=clang++
+          fi
+          echo "CC: $CC"
+          echo "CXX: $CXX"
+
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential clang-format cmake cmake-format cpputest cppcheck clang-tidy valgrind lcov
+          sudo apt-get install -y build-essential cmake cpputest cppcheck clang-tidy valgrind lcov
+          sudo apt-get install -y clang-format cmake-format
 
       - name: Build
-        run: make build
+        run: make build BUILD_TYPE=${{ matrix.build_type }}
 
       - name: Run Cppcheck (Static Code Analysis)
         run: make cppcheck
@@ -39,30 +57,82 @@ jobs:
       - name: Check Code Formatting with Clang-Format
         run: |
           clang-format --version
-          find ./src -name '*.cpp' -o -name '*.hpp' | xargs clang-format -style=file --dry-run -Werror
+          find ./src ./tests -name '*.cpp' -o -name '*.hpp' | xargs clang-format -style=file --dry-run -Werror
 
-      - name: Run Valgrind on TestServer
-        if: matrix.build_type == 'Debug'
-        run: valgrind --leak-check=full --track-origins=yes ./build/tests/ut/server/TestServer
+      - name: Run Valgrind on Tests
+        if: matrix.build_type == 'Debug' && matrix.compiler == 'gcc'
+        run: |
+          valgrind --leak-check=full --track-origins=yes ./build/tests/ut/TestExecutable
 
       - name: Run Unit Tests
         run: make test
 
       - name: Generate Coverage Report and Enforce 80% Threshold
+        if: matrix.coverage == true && matrix.build_type == 'Debug'
         run: |
           make clean
           make coverage
-
-          lcov --summary build/coverage/coverage_filtered.info | grep -q "lines.*: 80.0%" || { echo "Code coverage is below 80%"; exit 1; }
+          lcov --summary build/coverage/coverage_filtered.info | grep -q "lines.*: [89][0-9]\." || { echo "Code coverage is below 80%"; exit 1; }
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: build-artifacts
+          name: build-artifacts-${{ matrix.compiler }}-${{ matrix.build_type }}
           path: build/
 
-      # - name: Upload Coverage Report
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: coverage-report
-      #     path: coverage.html
+  sct:
+    runs-on: ubuntu-24.04
+    needs: build-and-test
+    strategy:
+      matrix:
+        compiler: [gcc, clang]
+        build_type: [Debug, Release]
+        include:
+          - compiler: gcc
+            coverage: true
+          - compiler: clang
+            coverage: false
+    env:
+      BUILD_SCT: ON
+      CXXFLAGS: "-Wall -Wextra -Werror -std=c++20"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set compiler environment variables
+        run: |
+          if [ "${{ matrix.compiler }}" == "gcc" ]; then
+            export CC=gcc
+            export CXX=g++
+          elif [ "${{ matrix.compiler }}" == "clang" ]; then
+            export CC=clang
+            export CXX=clang++
+          fi
+          echo "CC: $CC"
+          echo "CXX: $CXX"
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake cpputest cppcheck clang-tidy valgrind lcov
+          sudo apt-get install -y clang-format cmake-format
+
+      - name: Build System Tests
+        run: make build-sct BUILD_TYPE=${{ matrix.build_type }}
+
+      - name: Run System Tests
+        run: make test
+
+      - name: Generate SCT Coverage Report and Enforce 80% Threshold
+        if: matrix.coverage == true && matrix.build_type == 'Debug'
+        run: |
+          make clean
+          make coverage-sct
+          lcov --summary build/coverage/coverage_filtered.info | grep -q "lines.*: [89][0-9]\." || { echo "System test code coverage is below 80%"; exit 1; }
+
+      - name: Upload SCT Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: sct-build-artifacts-${{ matrix.compiler }}-${{ matrix.build_type }}
+          path: build/
