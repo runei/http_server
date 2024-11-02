@@ -1,9 +1,13 @@
 #pragma once
 
+#include <array>
+#include <cstdint>
 #include <map>
 #include <string_view>
 
-enum class HttpStatusCode
+#include "SocketException.hpp"
+
+enum class HttpStatusCode : std::uint16_t
 {
     // 2xx Success
     OK        = 200,
@@ -43,6 +47,7 @@ public:
     static std::string_view getHttpStatusDescription(HttpStatusCode code);
 
 private:
-    static constexpr size_t                                                                   NumberOfStatusCodes = 23;
-    static const std::array<std::pair<HttpStatusCode, std::string_view>, NumberOfStatusCodes> StatusCodeArray;
+    static constexpr size_t NumberOfStatusCodes = 23;
+
+    static const std::array<std::pair<HttpStatusCode, std::string_view>, NumberOfStatusCodes> m_status_code_array;
 };

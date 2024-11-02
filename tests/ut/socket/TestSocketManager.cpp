@@ -9,6 +9,9 @@
 #include "SocketException.hpp"
 #include "SocketManager.hpp"
 
+static constexpr int NumberConnections = 10;
+static constexpr int Port              = 8080;
+
 void simulateClientConnection(uint16_t port)
 {
     int client_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -32,9 +35,6 @@ void simulateClientConnection(uint16_t port)
 
 TEST_GROUP (SocketManagerTest)
 {
-    static constexpr int NumberConnections = 10;
-    static constexpr int Port              = 8080;
-
     void setup() override {}
 
     void teardown() override

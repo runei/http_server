@@ -52,8 +52,6 @@ public:
 
 TEST_GROUP (RequestDispatcherTest)
 {
-    static constexpr size_t UIntBufferSize = static_cast<size_t>(BufferSize);
-
     void teardown() override
     {
         mock().clear();

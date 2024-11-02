@@ -11,11 +11,9 @@ TESTS_DIR := $(CMAKE_SOURCE_DIR)/tests/ut
 SCT_DIR := $(CMAKE_SOURCE_DIR)/tests/sct
 
 SRC_FILES := $(shell find $(SRC_DIR) $(TESTS_DIR) -name "*.cpp" -o -name "*.hpp")
-INCLUDE_PATHS := $(shell find $(SRC_DIR) -type d -exec echo -I{} \; | tr '\n' ' ')
 EXTRA_ARG := $(shell find $(SRC_DIR) -type d -exec echo --extra-arg=-I{} \; | tr '\n' ' ')
 
 SCT_FILES := $(shell find $(SCT_DIR) -name "*.cpp" -o -name "*.hpp")
-INCLUDE_PATHS_SCT := $(shell find $(SCT_DIR) -type d -exec echo -I{} \; | tr '\n' ' ')
 EXTRA_ARG_SCT := $(shell find $(SCT_DIR) -type d -exec echo --extra-arg=-I{} \; | tr '\n' ' ')
 
 .PHONY: all build clean run test format cppcheck coverage tidy
@@ -93,9 +91,8 @@ format:
 
 # Run cppcheck with error checking
 cppcheck:
-	@cppcheck --enable=all $(INCLUDE_PATHS) --error-exitcode=1 --suppress=missingInclude $(SRC_FILES) || { echo 'cppcheck failed'; exit 1; }
+	@cppcheck --project=${CMAKE_BUILD_DIR}/compile_commands.json --enable=all --error-exitcode=1 --suppress=missingInclude --suppress=missingIncludeSystem --suppress=checkersReport || { echo 'cppcheck failed'; exit 1; }
 
-cppcheck-sct: INCLUDE_PATHS=$(INCLUDE_PATHS_SCT)
 cppcheck-sct: SRC_FILES=$(SCT_FILES)
 cppcheck-sct: cppcheck
 

@@ -1,11 +1,10 @@
 #pragma once
 
-#include <array>
-#include <cstring>
 #include <sstream>
 #include <stdexcept>
-
-#include "Definitions.hpp"
+#include <string>
+#include <string_view>
+#include <system_error>
 
 class SocketException : public std::runtime_error
 {
@@ -20,10 +19,7 @@ public:
 private:
     static std::string buildErrorMessage(std::string_view message, int error_number)
     {
-        std::array<char, BufferSize> buffer{};
-
-        // GNU version of strerror_r returns char*
-        char* error_message = strerror_r(error_number, buffer.data(), buffer.size());
+        const std::string error_message = std::system_category().message(error_number);
 
         std::stringstream final_message;
         final_message << message << ": " << error_message;

@@ -26,8 +26,6 @@ WarningsAsErrors: "*" # Treat all warnings as errors
 
 HeaderFilterRegex: ".*" # Apply checks to all files
 
-AnalyzeTemporaryDtors: false # Disable destructor checks for temporaries
-
 CheckOptions:
   # Modernize checks for C++20
   - key: modernize-use-auto
@@ -135,12 +133,6 @@ CheckOptions:
   - key: cert-dcl21-cpp
     value: true # Warn on violating Cert DCL21-C++ (Avoid returning a reference to a local object)
 
-  # Optional: disable some very specific checks
-  - key: cppcoreguidelines-avoid-c-arrays
-    value: false # Disable this if you still need to use C-style arrays in legacy code
-  - key: cppcoreguidelines-special-member-functions
-    value: false # Disable strict enforcement of rule-of-five for specific use cases
-
   - key: misc-unused-variables
     value: true
 
@@ -152,7 +144,7 @@ CheckOptions:
 
   # Naming convention for constants (PascalCase)
   - key: readability-identifier-naming.ConstantCase
-    value: CamelCase
+    value: lower_case
 
   # Naming convention for constexpr variables (PascalCase)
   - key: readability-identifier-naming.ConstexprVariableCase

@@ -4,7 +4,7 @@
 
 std::string_view HttpStatusCodeHelper::getHttpStatusDescription(HttpStatusCode code)
 {
-    for (const auto& [status, description] : StatusCodeArray)
+    for (const auto& [status, description] : m_status_code_array)
     {
         if (status == code)
         {
@@ -15,7 +15,7 @@ std::string_view HttpStatusCodeHelper::getHttpStatusDescription(HttpStatusCode c
 }
 
 const std::array<std::pair<HttpStatusCode, std::string_view>, HttpStatusCodeHelper::NumberOfStatusCodes>
-    HttpStatusCodeHelper::StatusCodeArray = {{
+    HttpStatusCodeHelper::m_status_code_array = {{
         {HttpStatusCode::OK, "200 OK"},
         {HttpStatusCode::Created, "201 Created"},
         {HttpStatusCode::NoContent, "204 No Content"},
