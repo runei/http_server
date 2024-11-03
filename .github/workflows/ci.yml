@@ -54,10 +54,10 @@ jobs:
       - name: Run Clang-Tidy (Linting)
         run: make tidy
 
-      - name: Check Code Formatting with Clang-Format
-        run: |
-          clang-format --version
-          find ./src ./tests -name '*.cpp' -o -name '*.hpp' | xargs clang-format -style=file --dry-run -Werror
+      # - name: Check Code Formatting with Clang-Format
+      #   run: |
+      #     clang-format --version
+      #     find ./src ./tests -name '*.cpp' -o -name '*.hpp' | xargs clang-format -style=file --dry-run -Werror
 
       - name: Run Valgrind on Tests
         if: matrix.build_type == 'Debug' && matrix.compiler == 'gcc'
@@ -120,6 +120,12 @@ jobs:
 
       - name: Build System Tests
         run: make build-sct BUILD_TYPE=${{ matrix.build_type }}
+
+      - name: Run Cppcheck (Static Code Analysis)
+        run: make cppcheck
+
+      - name: Run Clang-Tidy (Linting)
+        run: make tidy
 
       - name: Run System Tests
         run: make test

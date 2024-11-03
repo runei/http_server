@@ -1,6 +1,10 @@
-#include "CppUTest/TestHarness.h"
+#include <CppUTest/TestHarness.h> // NOLINT(misc-include-cleaner)
 
+#include <CppUTest/UtestMacros.h>
+
+#include <cstddef>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "Logger.hpp"
@@ -37,8 +41,8 @@ private:
 TEST (LoggerTest, LogInfoMessage)
 {
     // Arrange
-    std::string message  = "This is an info message.";
-    std::string expected = "[INFO] This is an info message.";
+    const std::string message  = "This is an info message.";
+    const std::string expected = "[INFO] This is an info message.";
 
     // Act
     getLogger()->logInfo(message);
@@ -51,8 +55,8 @@ TEST (LoggerTest, LogInfoMessage)
 TEST (LoggerTest, LogSuccessMessage)
 {
     // Arrange
-    std::string message  = "This is an success message.";
-    std::string expected = "[SUCCESS] This is an success message.";
+    const std::string message  = "This is an success message.";
+    const std::string expected = "[SUCCESS] This is an success message.";
 
     // Act
     getLogger()->logSuccess(message);
@@ -65,8 +69,8 @@ TEST (LoggerTest, LogSuccessMessage)
 TEST (LoggerTest, LogErrorMessage)
 {
     // Arrange
-    std::string message  = "This is an error message.";
-    std::string expected = "[ERROR] This is an error message.";
+    const std::string message  = "This is an error message.";
+    const std::string expected = "[ERROR] This is an error message.";
 
     // Act
     getLogger()->logError(message);

@@ -1,9 +1,13 @@
 #include "Result.hpp"
 
 #include <iomanip>
+#include <ios>
 #include <sstream>
+#include <string>
 
-Result::Result() : m_logger(Logger::getInstance()) {}
+#include "Logger.hpp"
+
+Result::Result() : m_logger(&Logger::getInstance()) {}
 
 void Result::logResult(const std::string& test_name, bool success, const std::string& message, double duration)
 {
@@ -11,11 +15,11 @@ void Result::logResult(const std::string& test_name, bool success, const std::st
 
     if (success)
     {
-        m_logger.logSuccess("Test Passed: " + test_name + " - " + message);
+        m_logger->logSuccess("Test Passed: " + test_name + " - " + message);
     }
     else
     {
-        m_logger.logError("Test Failed: " + test_name + " - " + message);
+        m_logger->logError("Test Failed: " + test_name + " - " + message);
     }
 }
 
@@ -29,7 +33,7 @@ std::string Result::getResults() const
 
     for (const auto& result : m_results)
     {
-        std::string success_string = result.isSuccess() ? "PASS" : "FAIL";
+        const std::string success_string = result.isSuccess() ? "PASS" : "FAIL";
         oss << getResultMessage(
             result.getTestName(), success_string, result.getMessage(), std::to_string(result.getDuration()));
     }
@@ -51,5 +55,5 @@ std::string Result::getResultMessage(const std::string& test_name,
 void Result::clearResults()
 {
     m_results.clear();
-    m_logger.logInfo("All tests results have been cleared.");
+    m_logger->logInfo("All tests results have been cleared.");
 }

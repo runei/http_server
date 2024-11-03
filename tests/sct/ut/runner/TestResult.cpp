@@ -1,6 +1,10 @@
-#include "CppUTest/TestHarness.h"
+#include <CppUTest/TestHarness.h> // NOLINT(misc-include-cleaner)
+
+#include <CppUTest/UtestMacros.h>
 
 #include <memory>
+#include <string>
+#include <string_view>
 
 #include "Logger.hpp"
 #include "Result.hpp"
@@ -25,46 +29,46 @@ private:
 TEST (ResultTest, LogSinglePassTest)
 {
     // Arrange
-    const std::string TestName     = "SinglePassTest";
-    const std::string TestMessage  = "Executed successfully";
-    const double      TestDuration = 50.0;
+    const std::string test_name     = "SinglePassTest";
+    const std::string test_message  = "Executed successfully";
+    const double      test_duration = 50.0;
 
     // Act
-    getResult()->logResult(TestName, true, TestMessage, TestDuration);
+    getResult()->logResult(test_name, true, test_message, test_duration);
 
     // Assert
     STRCMP_CONTAINS("PASS", getResult()->getResults().c_str());
-    STRCMP_CONTAINS(TestName.c_str(), getResult()->getResults().c_str());
-    STRCMP_CONTAINS(TestMessage.c_str(), getResult()->getResults().c_str());
+    STRCMP_CONTAINS(test_name.c_str(), getResult()->getResults().c_str());
+    STRCMP_CONTAINS(test_message.c_str(), getResult()->getResults().c_str());
 }
 
 TEST (ResultTest, LogSingleFailTest)
 {
     // Arrange
-    const std::string TestName     = "SingleFailTest";
-    const std::string TestMessage  = "Execution failed";
-    const double      TestDuration = 30.0;
+    const std::string test_name     = "SingleFailTest";
+    const std::string test_message  = "Execution failed";
+    const double      test_duration = 30.0;
 
     // Act
-    getResult()->logResult(TestName, false, TestMessage, TestDuration);
+    getResult()->logResult(test_name, false, test_message, test_duration);
 
     // Assert
     STRCMP_CONTAINS("FAIL", getResult()->getResults().c_str());
-    STRCMP_CONTAINS(TestName.c_str(), getResult()->getResults().c_str());
-    STRCMP_CONTAINS(TestMessage.c_str(), getResult()->getResults().c_str());
+    STRCMP_CONTAINS(test_name.c_str(), getResult()->getResults().c_str());
+    STRCMP_CONTAINS(test_message.c_str(), getResult()->getResults().c_str());
 }
 
 TEST (ResultTest, ClearResults)
 {
     // Arrange
-    std::string_view expected =
+    const std::string_view expected =
         "Test Name           Result    Message                                           Duration "
         "(ms)\n--------------------------------------------------------------------------------\n";
-    const double Duration1 = 10.0;
-    const double Duration2 = 15.0;
+    const double duration1 = 10.0;
+    const double duration2 = 15.0;
 
-    getResult()->logResult("Test1", true, "Success message", Duration1);
-    getResult()->logResult("Test2", false, "Failure message", Duration2);
+    getResult()->logResult("Test1", true, "Success message", duration1);
+    getResult()->logResult("Test2", false, "Failure message", duration2);
 
     // Act
     getResult()->clearResults();
@@ -77,36 +81,36 @@ TEST (ResultTest, ClearResults)
 TEST (ResultTest, LogMultipleResults)
 {
     // Arrange
-    const std::string TestName1    = "MultiTest1";
-    const std::string TestMessage1 = "First test";
-    const double      Duration1    = 20.0;
+    const std::string test_name1    = "MultiTest1";
+    const std::string test_message1 = "First test";
+    const double      duration1     = 20.0;
 
-    const std::string TestName2    = "MultiTest2";
-    const std::string TestMessage2 = "Second test";
-    const double      Duration2    = 25.0;
+    const std::string test_name2    = "MultiTest2";
+    const std::string test_message2 = "Second test";
+    const double      duration2     = 25.0;
 
     // Act
-    getResult()->logResult(TestName1, true, TestMessage1, Duration1);
-    getResult()->logResult(TestName2, false, TestMessage2, Duration2);
+    getResult()->logResult(test_name1, true, test_message1, duration1);
+    getResult()->logResult(test_name2, false, test_message2, duration2);
 
     // Assert
     STRCMP_CONTAINS("PASS", getResult()->getResults().c_str());
     STRCMP_CONTAINS("FAIL", getResult()->getResults().c_str());
-    STRCMP_CONTAINS(TestName1.c_str(), getResult()->getResults().c_str());
-    STRCMP_CONTAINS(TestName2.c_str(), getResult()->getResults().c_str());
-    STRCMP_CONTAINS(TestMessage1.c_str(), getResult()->getResults().c_str());
-    STRCMP_CONTAINS(TestMessage2.c_str(), getResult()->getResults().c_str());
+    STRCMP_CONTAINS(test_name1.c_str(), getResult()->getResults().c_str());
+    STRCMP_CONTAINS(test_name2.c_str(), getResult()->getResults().c_str());
+    STRCMP_CONTAINS(test_message1.c_str(), getResult()->getResults().c_str());
+    STRCMP_CONTAINS(test_message2.c_str(), getResult()->getResults().c_str());
 }
 
 TEST (ResultTest, LogResultIncludesDuration)
 {
     // Arrange
-    const std::string TestName     = "DurationTest";
-    const std::string TestMessage  = "Timing test";
-    const double      TestDuration = 100.0;
+    const std::string test_name     = "DurationTest";
+    const std::string test_message  = "Timing test";
+    const double      test_duration = 100.0;
 
     // Act
-    getResult()->logResult(TestName, true, TestMessage, TestDuration);
+    getResult()->logResult(test_name, true, test_message, test_duration);
 
     // Assert
     STRCMP_CONTAINS("100.0", getResult()->getResults().c_str());

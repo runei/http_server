@@ -1,13 +1,14 @@
 #include "Logger.hpp"
 
 #include <iostream>
+#include <string>
 
 Logger::Logger()
 {
     m_log_file.open("log.txt");
     if (!m_log_file.is_open())
     {
-        std::cerr << "Logger: Error opening log file!" << std::endl;
+        std::cerr << "Logger: Error opening log file!" << "\n";
     }
 }
 
@@ -24,8 +25,8 @@ Logger& Logger::getInstance()
 
 void Logger::log(const std::string& message, const std::string& level)
 {
-    std::string log_entry = "[" + level + "] " + message;
-    std::cout << log_entry << std::endl;
+    const std::string log_entry = "[" + level + "] " + message;
+    std::cout << log_entry << "\n";
     writeToFile(log_entry);
 }
 
@@ -61,6 +62,6 @@ void Logger::writeToFile(const std::string& message)
 {
     if (m_log_file.is_open())
     {
-        m_log_file << message << std::endl;
+        m_log_file << message << "\n";
     }
 }

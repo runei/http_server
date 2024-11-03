@@ -1,6 +1,8 @@
 #pragma once
 
+#include <cstdint>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "Logger.hpp"
@@ -31,7 +33,7 @@ private:
     static constexpr uint8_t SeparatorWidth = 80;
 
     std::vector<TestOutcome> m_results;
-    Logger&                  m_logger;
+    Logger*                  m_logger;
 };
 
 class Result::TestOutcome
