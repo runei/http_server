@@ -1,6 +1,12 @@
 #include "HttpRequest.hpp"
 
-#include "SocketException.hpp"
+#include <optional>
+#include <string>
+#include <utility>
+
+#include "Definitions.hpp"
+#include "HttpVersion.hpp"
+#include "Method.hpp"
 
 HttpRequest::HttpRequest() : m_method(Method::NotSupported), m_http_version(HttpVersion::NotSupported) {}
 
@@ -24,7 +30,7 @@ HttpVersion HttpRequest::getHttpVersion() const
     return m_http_version;
 }
 
-std::optional<std::string_view> HttpRequest::getHeader(const std::string& key) const
+std::optional<std::string> HttpRequest::getHeader(const std::string& key) const
 {
     auto header = m_headers.find(key);
     if (header != m_headers.end())
@@ -43,6 +49,10 @@ HttpRequest::Builder& HttpRequest::Builder::setMethod(Method method)
 HttpRequest::Builder& HttpRequest::Builder::setUrl(std::string url)
 {
     m_url = std::move(url);
+    if (m_url == "/")
+    {
+        m_url = "/index.html";
+    }
     return *this;
 }
 

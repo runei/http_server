@@ -1,5 +1,7 @@
 #pragma once
 
+#include <sys/types.h>
+
 #include <string>
 
 class Client
@@ -18,7 +20,6 @@ public:
     [[nodiscard]] std::string getResponse() const;
 
 private:
-    bool setNonBlockingMode();
     bool connectSocket(const std::string& ip_address, int port);
     void closeSocket();
 

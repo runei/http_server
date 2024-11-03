@@ -1,6 +1,12 @@
 #include "HttpResponse.hpp"
 
 #include <sstream>
+#include <string>
+#include <utility>
+
+#include "Definitions.hpp"
+#include "HttpStatusCode.hpp"
+#include "HttpVersion.hpp"
 
 HttpResponse::HttpResponse(HttpVersion http_version, HttpStatusCode status_code, HttpHeaders headers, std::string body)
     : m_http_version(http_version), m_status_code(status_code), m_headers(std::move(headers)), m_body(std::move(body))
@@ -13,14 +19,14 @@ std::string HttpResponse::buildResponse() const
 
     auto status_message = HttpStatusCodeHelper::getHttpStatusDescription(m_status_code);
 
-    response << HttpVersionHelper::toString(m_http_version) << " " << status_message << std::endl;
+    response << HttpVersionHelper::toString(m_http_version) << " " << status_message << "\n";
 
     for (const auto& header : m_headers)
     {
-        response << header.first << ": " << header.second << std::endl;
+        response << header.first << ": " << header.second << "\n";
     }
 
-    response << std::endl;
+    response << "\n";
 
     response << m_body;
 

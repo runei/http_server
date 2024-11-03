@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <optional>
 
 #include <netinet/in.h>
@@ -30,7 +31,8 @@ private:
     [[nodiscard]] bool isSocketCreated() const;
     void               setReusableAddress();
 
-    static constexpr int InactiveServer = -1;
+    static constexpr int      InactiveServer = -1;
+    static constexpr uint16_t TimeoutMs      = 2000;
 
     int         m_server_socket{InactiveServer};
     sockaddr_in m_address{};

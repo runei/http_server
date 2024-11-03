@@ -1,11 +1,15 @@
 #pragma once
 
+#include <array>
+#include <string>
+
+#include "Definitions.hpp"
 #include "HttpRequest.hpp"
-#include "HttpStatusCode.hpp"
 #include "HttpVersion.hpp"
+#include "Method.hpp"
 #include "Result.hpp"
 
-static constexpr size_t NumOfElementsInRequestLine = 3;
+static constexpr unsigned short NumOfElementsInRequestLine = 3;
 
 using RequestLine         = std::array<std::string, NumOfElementsInRequestLine>;
 using RequestParserResult = Result<HttpRequest>;

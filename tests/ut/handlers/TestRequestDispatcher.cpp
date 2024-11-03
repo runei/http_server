@@ -1,10 +1,18 @@
-#include "CppUTest/TestHarness.h"
+#include <CppUTest/TestHarness.h> // NOLINT(misc-include-cleaner)
 
-#include "CppUTestExt/MockSupport.h"
+#include <CppUTest/UtestMacros.h>
+#include <CppUTestExt/MockSupport.h>
 
+#include <sys/types.h>
+
+#include <cstddef>
 #include <memory>
+#include <string>
 
 #include "Definitions.hpp"
+#include "HttpRequest.hpp"
+#include "HttpResponse.hpp"
+#include "HttpStatusCode.hpp"
 #include "IRequestHandler.hpp"
 #include "RequestDispatcher.hpp"
 
@@ -62,9 +70,9 @@ TEST (RequestDispatcherTest, HandleRequest_SuccessfulRequest)
 {
     // Arrange
     RequestDispatcher dispatcher{std::make_unique<DummyRequestHandler>()};
-    int               client_socket     = 1;
-    std::string       raw_request       = "GET /index.html HTTP/1.1\r\nHost: localhost\r\n\r\n";
-    std::string       expected_response = "HTTP/1.1 200 OK\n\n";
+    const int         client_socket     = 1;
+    const std::string raw_request       = "GET /index.html HTTP/1.1\r\nHost: localhost\r\n\r\n";
+    const std::string expected_response = "HTTP/1.1 200 OK\n\n";
 
     // Mocks
     mock()
@@ -96,9 +104,9 @@ TEST (RequestDispatcherTest, HandleRequest_NotSuccessfulRequest)
 {
     // Arrange
     RequestDispatcher dispatcher{std::make_unique<DummyRequestHandler>()};
-    int               client_socket = 1;
-    std::string       raw_request   = "GET /index.html HTTP/1.1\n";
-    std::string       expected_response =
+    const int         client_socket = 1;
+    const std::string raw_request   = "GET /index.html HTTP/1.1\n";
+    const std::string expected_response =
         "HTTP/1.1 400 Bad Request\nContent-Type: text/html\n\n<html><head><title>400 Bad "
         "Request</title></head><body><h1>400 Bad Request</h1><p>An error occurred: 400 Bad Request</p></body></html>";
 
@@ -132,14 +140,14 @@ TEST (RequestDispatcherTest, HandleRequest_LargeRequest)
 {
     // Arrange
     RequestDispatcher dispatcher{std::make_unique<DummyRequestHandler>()};
-    int               client_socket = 1;
+    const int         client_socket = 1;
     constexpr size_t  TotalSize     = BufferSize + (BufferSize / 2);
 
     // Simulate a request larger than Buffersize bytes (let's use 5000 bytes as an example)
-    std::string init_request      = "GET /index.html HTTP/1.1\r\nHost: localhost\r\n\r\n";
-    std::string raw_request_part1 = init_request + std::string(BufferSize - init_request.size(), 'A');
-    std::string raw_request_part2(TotalSize - BufferSize, 'B');
-    std::string expected_response = "HTTP/1.1 200 OK\n\n";
+    const std::string init_request      = "GET /index.html HTTP/1.1\r\nHost: localhost\r\n\r\n";
+    const std::string raw_request_part1 = init_request + std::string(BufferSize - init_request.size(), 'A');
+    const std::string raw_request_part2(TotalSize - BufferSize, 'B');
+    const std::string expected_response = "HTTP/1.1 200 OK\n\n";
 
     // First recv call to return the first Buffersize bytes
     mock()

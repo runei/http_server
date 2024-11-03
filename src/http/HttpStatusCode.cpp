@@ -1,5 +1,9 @@
 #include "HttpStatusCode.hpp"
 
+#include <array>
+#include <string_view>
+#include <utility>
+
 #include "SocketException.hpp"
 
 std::string_view HttpStatusCodeHelper::getHttpStatusDescription(HttpStatusCode code)

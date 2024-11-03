@@ -1,6 +1,10 @@
-#include <CppUTest/TestHarness.h>
+#include <CppUTest/TestHarness.h> // NOLINT(misc-include-cleaner)
 
+#include <CppUTest/UtestMacros.h>
+
+#include <cerrno>
 #include <cstring>
+#include <string_view>
 
 #include "SocketException.hpp"
 
@@ -13,10 +17,10 @@ TEST_GROUP (SocketExceptionTest)
 TEST (SocketExceptionTest, ThrowErrorMessage)
 {
     // Arrange
-    std::string_view expected = "Connection failed";
+    const std::string_view expected = "Connection failed";
 
     // Act
-    SocketException actual("Connection failed");
+    const SocketException actual("Connection failed");
 
     // Assert
     STRCMP_EQUAL(expected.data(), actual.what());
@@ -25,11 +29,11 @@ TEST (SocketExceptionTest, ThrowErrorMessage)
 TEST (SocketExceptionTest, ErrorNumberInMessage)
 {
     // Arrange
-    int              error_number = EACCES; // Permission denied error code
-    std::string_view expected     = "Connection failed: Permission denied";
+    const int              error_number = EACCES; // Permission denied error code
+    const std::string_view expected     = "Connection failed: Permission denied";
 
     // Act
-    SocketException actual("Connection failed", error_number);
+    const SocketException actual("Connection failed", error_number);
 
     // Assert
     STRCMP_EQUAL(expected.data(), actual.what());

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "HttpResponse.hpp"
 #include "HttpStatusCode.hpp"
 

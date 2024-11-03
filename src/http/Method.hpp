@@ -1,9 +1,11 @@
 #pragma once
 
 #include <array>
-#include <string>
+#include <cstdint>
+#include <string_view>
+#include <utility>
 
-enum class Method
+enum class Method : std::uint8_t
 {
     NotSupported,
     Get,

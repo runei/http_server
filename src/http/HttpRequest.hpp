@@ -14,10 +14,10 @@ public:
 
     HttpRequest();
 
-    [[nodiscard]] Method                          getMethod() const;
-    [[nodiscard]] std::string                     getUrl() const;
-    [[nodiscard]] HttpVersion                     getHttpVersion() const;
-    [[nodiscard]] std::optional<std::string_view> getHeader(const std::string& key) const;
+    [[nodiscard]] Method                     getMethod() const;
+    [[nodiscard]] std::string                getUrl() const;
+    [[nodiscard]] HttpVersion                getHttpVersion() const;
+    [[nodiscard]] std::optional<std::string> getHeader(const std::string& key) const;
 
 private:
     HttpRequest(const Method& method, std::string url, HttpVersion http_version, HttpHeaders headers);

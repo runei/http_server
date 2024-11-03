@@ -1,8 +1,9 @@
 #include "Server.hpp"
 
-#include <iostream>
+#include <cstdint>
 #include <memory>
-#include <thread>
+#include <mutex>
+#include <optional>
 
 #include "FileRequestHandler.hpp"
 #include "SocketManager.hpp"
@@ -57,7 +58,7 @@ void Server::listenForConnections()
 void Server::updateServerRunningState(bool is_running)
 {
     {
-        std::lock_guard<std::mutex> lock(m_mutex);
+        const std::lock_guard<std::mutex> lock(m_mutex);
 
         m_is_running = is_running;
     }

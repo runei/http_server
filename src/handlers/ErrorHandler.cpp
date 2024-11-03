@@ -1,6 +1,11 @@
 #include "ErrorHandler.hpp"
 
 #include <sstream>
+#include <string>
+
+#include "HttpResponse.hpp"
+#include "HttpStatusCode.hpp"
+#include "HttpVersion.hpp"
 
 HttpResponse ErrorHandler::handleError(HttpStatusCode status_code)
 {

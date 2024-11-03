@@ -1,10 +1,16 @@
-#include "CppUTest/TestHarness.h"
+#include <CppUTest/TestHarness.h> // NOLINT(misc-include-cleaner)
+
+#include <CppUTest/UtestMacros.h>
+
+#include <sys/socket.h>
 
 #include <bit>
-#include <stdexcept>
+#include <cstdint>
 #include <thread>
 
 #include <arpa/inet.h>
+#include <netinet/in.h>
+#include <unistd.h>
 
 #include "SocketException.hpp"
 #include "SocketManager.hpp"
@@ -14,7 +20,7 @@ static constexpr int Port              = 8080;
 
 void simulateClientConnection(uint16_t port)
 {
-    int client_socket = socket(AF_INET, SOCK_STREAM, 0);
+    const int client_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (client_socket < 0)
     {
         throw SocketException("TestSocketManager: Failed to create client socket");

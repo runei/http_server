@@ -1,9 +1,14 @@
 #include "SocketManager.hpp"
 
+#include <sys/poll.h>
 #include <sys/socket.h>
 
 #include <bit>
+#include <cerrno>
+#include <cstdint>
+#include <optional>
 
+#include <netinet/in.h>
 #include <poll.h>
 #include <unistd.h>
 
@@ -53,16 +58,16 @@ void SocketManager::listenSocket(int n_connections)
         throw SocketException("SocketManager: Socket not created yet");
     }
 
-    struct pollfd fds;
+    pollfd fds{};
     fds.fd     = m_server_socket;
     fds.events = POLLIN;
 
-    int ret = poll(&fds, 1, 2000);
+    const int ret = poll(&fds, 1, TimeoutMs);
 
-    if (ret > 0 && (fds.events & POLLIN))
+    if (ret > 0 && fds.events == POLLIN)
     {
-        sockaddr_in client_address{};
-        socklen_t   client_len = sizeof(client_address);
+        const sockaddr_in client_address{};
+        socklen_t         client_len = sizeof(client_address);
 
         int client_socket = accept(m_server_socket, std::bit_cast<sockaddr*>(&client_address), &client_len);
         if (client_socket < 0)
@@ -114,6 +119,8 @@ void SocketManager::setAddress(uint16_t port)
 void SocketManager::setReusableAddress()
 {
     int opt = 1;
+
+    // NOLINTNEXTLINE(misc-include-cleaner)
     if (setsockopt(m_server_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
     {
         closeSocket();

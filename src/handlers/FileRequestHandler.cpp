@@ -1,15 +1,20 @@
 #include "FileRequestHandler.hpp"
 
 #include <fstream>
+#include <ios>
+#include <optional>
 #include <sstream>
+#include <string>
 
 #include "CommonFunctions.hpp"
-#include "Definitions.hpp"
 #include "ErrorHandler.hpp"
+#include "HttpRequest.hpp"
+#include "HttpResponse.hpp"
+#include "HttpStatusCode.hpp"
 
 HttpResponse FileRequestHandler::handle(const HttpRequest& request)
 {
-    std::string file_path = CommonFunctions::getStaticFolderPath() + request.getUrl();
+    const std::string file_path = CommonFunctions::getStaticFolderPath() + request.getUrl();
 
     auto file_contents = readFileContents(file_path);
     if (!file_contents)
@@ -29,7 +34,7 @@ HttpResponse FileRequestHandler::handle(const HttpRequest& request)
 
 std::optional<std::string> FileRequestHandler::readFileContents(const std::string& file_path)
 {
-    std::ifstream file(file_path, std::ios::in | std::ios::binary);
+    const std::ifstream file(file_path, std::ios::in | std::ios::binary);
     if (!file)
     {
         return std::nullopt;

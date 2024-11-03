@@ -1,8 +1,18 @@
 #include "RequestDispatcher.hpp"
 
 #include <sys/socket.h>
+#include <sys/types.h>
 
+#include <array>
+#include <memory>
+#include <string>
+#include <utility>
+
+#include <unistd.h>
+
+#include "Definitions.hpp"
 #include "ErrorHandler.hpp"
+#include "IRequestHandler.hpp"
 #include "RequestParser.hpp"
 
 RequestDispatcher::RequestDispatcher(std::unique_ptr<IRequestHandler> request_handler)
@@ -12,7 +22,7 @@ RequestDispatcher::RequestDispatcher(std::unique_ptr<IRequestHandler> request_ha
 
 void RequestDispatcher::handleRequest(int client_socket)
 {
-    std::string raw_request = readFromSocket(client_socket);
+    const std::string raw_request = readFromSocket(client_socket);
 
     auto request = RequestParser::parse(raw_request);
 

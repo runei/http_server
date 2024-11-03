@@ -1,10 +1,11 @@
 #pragma once
 
 #include <array>
+#include <cstdint>
 #include <string_view>
 #include <utility>
 
-enum class HttpVersion
+enum class HttpVersion : std::uint8_t
 {
     NotSupported,
     Http11

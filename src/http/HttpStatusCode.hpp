@@ -1,11 +1,10 @@
 #pragma once
 
 #include <array>
+#include <cstddef>
 #include <cstdint>
-#include <map>
 #include <string_view>
-
-#include "SocketException.hpp"
+#include <utility>
 
 enum class HttpStatusCode : std::uint16_t
 {

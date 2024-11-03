@@ -1,13 +1,16 @@
 #include "Client.hpp"
 
 #include <sys/socket.h>
+#include <sys/types.h>
 
 #include <array>
 #include <bit>
+#include <cerrno>
 #include <iostream>
+#include <string>
 
 #include <arpa/inet.h>
-#include <fcntl.h>
+#include <netinet/in.h>
 #include <unistd.h>
 
 #include "Definitions.hpp"
@@ -26,11 +29,6 @@ bool Client::connectToServer(const std::string& ip_address, int port)
         return false;
     }
 
-    if (!setNonBlockingMode())
-    {
-        return false;
-    }
-
     return connectSocket(ip_address, port);
 }
 
@@ -42,7 +40,7 @@ bool Client::sendRequest(const std::string& request) const
         return false;
     }
 
-    ssize_t bytes_sent = send(m_sock_fd, request.data(), request.size(), 0);
+    const ssize_t bytes_sent = send(m_sock_fd, request.data(), request.size(), 0);
     if (bytes_sent < 0)
     {
         std::cerr << "Client: Error: Failed to send request\n";
@@ -65,7 +63,7 @@ std::string Client::getResponse() const
 
     while (true)
     {
-        ssize_t received_bytes = recv(m_sock_fd, buffer.data(), buffer.size(), 0);
+        const ssize_t received_bytes = recv(m_sock_fd, buffer.data(), buffer.size(), 0);
         if (received_bytes > 0)
         {
             response.append(buffer.data(), received_bytes);
@@ -86,25 +84,6 @@ std::string Client::getResponse() const
     }
 
     return response;
-}
-
-bool Client::setNonBlockingMode()
-{
-    int flags = fcntl(m_sock_fd, F_GETFL);
-    if (flags == -1)
-    {
-        std::cerr << "Client: Error: Failed to get flags for non-blocking mode\n";
-        closeSocket();
-        return false;
-    }
-
-    if (fcntl(m_sock_fd, F_SETFL, flags | O_NONBLOCK) == -1)
-    {
-        std::cerr << "Client: Error: Failed to set non-blocking mode\n";
-        closeSocket();
-        return false;
-    }
-    return true;
 }
 
 bool Client::connectSocket(const std::string& ip_address, int port)
