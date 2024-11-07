@@ -93,9 +93,6 @@ format:
 cppcheck:
 	@cppcheck --project=${CMAKE_BUILD_DIR}/compile_commands.json --enable=all --error-exitcode=1 --suppress=missingInclude --suppress=missingIncludeSystem --suppress=checkersReport || { echo 'cppcheck failed'; exit 1; }
 
-cppcheck-sct: SRC_FILES=$(SCT_FILES)
-cppcheck-sct: cppcheck
-
 # Run clang-tidy
 tidy:
 	@echo "Running clang-tidy..."

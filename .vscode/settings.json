@@ -75,7 +75,8 @@
         "socket": "cpp",
         "timer": "cpp",
         "future": "cpp",
-        "ios": "cpp"
+        "ios": "cpp",
+        "chrono": "cpp"
     },
     "files.eol": "\n",
     "editor.wordWrap": "on",

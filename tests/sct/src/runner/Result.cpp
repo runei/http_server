@@ -1,59 +1,51 @@
-#include "Result.hpp"
-
-#include <iomanip>
-#include <ios>
-#include <sstream>
+#include <chrono>
 #include <string>
 
 #include "Logger.hpp"
+#include "Result.hpp"
 
-Result::Result() : m_logger(&Logger::getInstance()) {}
-
-void Result::logResult(const std::string& test_name, bool success, const std::string& message, double duration)
+void Result::setSuccess(bool success)
 {
-    m_results.emplace_back(test_name, success, message, duration);
+    m_success = success;
+}
 
-    if (success)
+bool Result::isSuccess() const
+{
+    return m_success;
+}
+
+void Result::setMessage(const std::string& message)
+{
+    m_message = message;
+}
+
+std::string Result::getMessage() const
+{
+    return m_message;
+}
+
+void Result::setExecutionTime(std::chrono::milliseconds execution_time)
+{
+    m_execution_time = execution_time;
+}
+
+std::chrono::milliseconds Result::getExecutionTime() const
+{
+    return m_execution_time;
+}
+
+void Result::logResult()
+{
+    Logger& logger = Logger::getInstance();
+
+    if (isSuccess())
     {
-        m_logger->logSuccess("Test Passed: " + test_name + " - " + message);
+        logger.logSuccess("Test Passed: " + getMessage());
     }
     else
     {
-        m_logger->logError("Test Failed: " + test_name + " - " + message);
-    }
-}
-
-std::string Result::getResults() const
-{
-    std::ostringstream oss;
-
-    oss << getResultMessage("Test Name", "Result", "Message", "Duration (ms)");
-
-    oss << std::string(SeparatorWidth, '-') << "\n";
-
-    for (const auto& result : m_results)
-    {
-        const std::string success_string = result.isSuccess() ? "PASS" : "FAIL";
-        oss << getResultMessage(
-            result.getTestName(), success_string, result.getMessage(), std::to_string(result.getDuration()));
+        logger.logError("Test Failed: " + getMessage());
     }
 
-    return oss.str();
-}
-
-std::string Result::getResultMessage(const std::string& test_name,
-                                     const std::string& result,
-                                     const std::string& message,
-                                     const std::string& duration)
-{
-    std::ostringstream oss;
-    oss << std::left << std::setw(TestNameWidth) << test_name << std::setw(ResultWidth) << result
-        << std::setw(MessageWidth) << message << duration << "\n";
-    return oss.str();
-}
-
-void Result::clearResults()
-{
-    m_results.clear();
-    m_logger->logInfo("All tests results have been cleared.");
+    logger.logInfo("Execution Time: " + std::to_string(m_execution_time.count()) + " ms");
 }

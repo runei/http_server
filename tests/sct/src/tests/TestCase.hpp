@@ -1,24 +1,32 @@
 #pragma once
 
+#include <string>
+
+#include "Result.hpp"
+
 class TestCase
 {
 public:
-    TestCase(const TestCase&)            = delete;
-    TestCase& operator=(const TestCase&) = delete;
-    TestCase(TestCase&&)                 = delete;
-    TestCase& operator=(TestCase&&)      = delete;
-
     virtual ~TestCase() = default;
 
-    void run()
-    {
-        setup();
-        execute();
-        tearDown();
-    }
+    bool run();
+
+    [[nodiscard]] const Result& getResult() const;
 
 protected:
-    virtual void setup()   = 0;
-    virtual void execute() = 0;
-    virtual void tearDown() {};
+    TestCase()                           = default;
+    TestCase(const TestCase&)            = default;
+    TestCase& operator=(const TestCase&) = default;
+    TestCase(TestCase&&)                 = default;
+    TestCase& operator=(TestCase&&)      = default;
+
+    virtual bool setup(std::string& error_message)    = 0;
+    virtual bool execute(std::string& error_message)  = 0;
+    virtual bool teardown(std::string& error_message) = 0;
+
+private:
+    void recordSuccess(const std::string& message);
+    void recordFailure(const std::string& message);
+
+    Result m_test_result;
 };
