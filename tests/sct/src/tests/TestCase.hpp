@@ -2,16 +2,16 @@
 
 #include <string>
 
-#include "Result.hpp"
+#include "TestCaseResult.hpp"
 
 class TestCase
 {
 public:
     virtual ~TestCase() = default;
 
-    bool run();
+    void run();
 
-    [[nodiscard]] const Result& getResult() const;
+    [[nodiscard]] TestCaseResult getResult() const;
 
 protected:
     TestCase()                           = default;
@@ -28,5 +28,5 @@ private:
     void recordSuccess(const std::string& message);
     void recordFailure(const std::string& message);
 
-    Result m_test_result;
+    TestCaseResult m_test_result;
 };

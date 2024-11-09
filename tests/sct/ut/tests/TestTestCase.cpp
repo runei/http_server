@@ -6,7 +6,7 @@
 
 #include "Logger.hpp"
 #include "MockTestCase.hpp"
-#include "Result.hpp"
+#include "TestCaseResult.hpp"
 
 TEST_GROUP (TestCaseTest)
 {
@@ -33,15 +33,14 @@ TEST (TestCaseTest, SuccessfulExecution)
     getTestCase()->setTeardownResult(true, "");
 
     // Act
-    const bool result = getTestCase()->run();
+    getTestCase()->run();
 
     // Assert
-    CHECK_TRUE(result);
     CHECK_TRUE(getTestCase()->wasSetupCalled());
     CHECK_TRUE(getTestCase()->wasExecuteCalled());
     CHECK_TRUE(getTestCase()->wasTeardownCalled());
 
-    const Result& test_result = getTestCase()->getResult();
+    const TestCaseResult& test_result = getTestCase()->getResult();
     CHECK_TRUE(test_result.isSuccess());
     STRCMP_EQUAL("", test_result.getMessage().c_str());
 }
@@ -52,15 +51,14 @@ TEST (TestCaseTest, SetupFails)
     getTestCase()->setSetupResult(false, "Setup failed");
 
     // Act
-    const bool result = getTestCase()->run();
+    getTestCase()->run();
 
-    // Assert
-    CHECK_FALSE(result);
+    // Asserts
     CHECK_TRUE(getTestCase()->wasSetupCalled());
     CHECK_FALSE(getTestCase()->wasExecuteCalled());
     CHECK_TRUE(getTestCase()->wasTeardownCalled());
 
-    const Result& test_result = getTestCase()->getResult();
+    const TestCaseResult& test_result = getTestCase()->getResult();
     CHECK_FALSE(test_result.isSuccess());
     STRCMP_EQUAL("Setup Failed: Setup failed", test_result.getMessage().c_str());
 }
@@ -72,15 +70,14 @@ TEST (TestCaseTest, ExecuteFails)
     getTestCase()->setExecuteResult(false, "Execution failed");
 
     // Act
-    const bool result = getTestCase()->run();
+    getTestCase()->run();
 
     // Assert
-    CHECK_FALSE(result);
     CHECK_TRUE(getTestCase()->wasSetupCalled());
     CHECK_TRUE(getTestCase()->wasExecuteCalled());
     CHECK_TRUE(getTestCase()->wasTeardownCalled());
 
-    const Result& test_result = getTestCase()->getResult();
+    const TestCaseResult& test_result = getTestCase()->getResult();
     CHECK_FALSE(test_result.isSuccess());
     STRCMP_EQUAL("Execution Failed: Execution failed", test_result.getMessage().c_str());
 }
@@ -93,15 +90,14 @@ TEST (TestCaseTest, TeardownFails_ResultSuccsess)
     getTestCase()->setTeardownResult(false, "Teardown failed");
 
     // Act
-    const bool result = getTestCase()->run();
+    getTestCase()->run();
 
     // Assert
-    CHECK_TRUE(result);
     CHECK_TRUE(getTestCase()->wasSetupCalled());
     CHECK_TRUE(getTestCase()->wasExecuteCalled());
     CHECK_TRUE(getTestCase()->wasTeardownCalled());
 
-    const Result& test_result = getTestCase()->getResult();
+    const TestCaseResult& test_result = getTestCase()->getResult();
     CHECK_TRUE(test_result.isSuccess());
     STRCMP_EQUAL("", test_result.getMessage().c_str());
 }
@@ -109,7 +105,7 @@ TEST (TestCaseTest, TeardownFails_ResultSuccsess)
 TEST (TestCaseTest, GetResult_BeforeRun_ReturnDefaultResult)
 {
     // Arrange & Act
-    const Result& test_result = getTestCase()->getResult();
+    const TestCaseResult& test_result = getTestCase()->getResult();
 
     // Assert
     CHECK_FALSE(test_result.isSuccess());

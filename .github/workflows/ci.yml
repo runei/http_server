@@ -62,7 +62,7 @@ jobs:
       - name: Run Valgrind on Tests
         if: matrix.build_type == 'Debug' && matrix.compiler == 'gcc'
         run: |
-          valgrind --leak-check=full --track-origins=yes ./build/tests/ut/TestServer
+          valgrind --leak-check=full --track-origins=yes ./build/tests/ut/server/TestServer
 
       - name: Run Unit Tests
         run: make test

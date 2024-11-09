@@ -3,7 +3,7 @@
 #include <chrono>
 #include <string>
 
-class Result
+class TestCaseResult
 {
 public:
     void                                    setSuccess(bool success);

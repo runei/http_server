@@ -5,10 +5,9 @@
 
 #include "Logger.hpp"
 
-bool TestCase::run()
+void TestCase::run()
 {
     auto        start_time = std::chrono::steady_clock::now();
-    bool        result     = false;
     std::string error_message;
 
     if (!setup(error_message))
@@ -22,7 +21,6 @@ bool TestCase::run()
     else
     {
         recordSuccess("");
-        result = true;
     }
 
     if (!teardown(error_message))
@@ -34,11 +32,9 @@ bool TestCase::run()
     auto end_time = std::chrono::steady_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
     m_test_result.setExecutionTime(duration);
-
-    return result;
 }
 
-const Result& TestCase::getResult() const
+TestCaseResult TestCase::getResult() const
 {
     return m_test_result;
 }
