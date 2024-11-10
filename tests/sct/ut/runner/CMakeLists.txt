@@ -1,17 +1,17 @@
-# TestSuite
+# TestGroup
 add_executable(
-    TestTestSuite
-    TestTestSuite.cpp
+    TestTestGroup
+    TestTestGroup.cpp
     ${CMAKE_TEST_MAIN}
 )
 
 target_link_libraries(
-    TestTestSuite
-    PRIVATE TestSuite
+    TestTestGroup
+    PRIVATE TestGroup
             TestCaseResult
             MockTestCase
             CppUTest
             CppUTestExt
 )
 
-add_test(NAME TestTestSuite COMMAND TestTestSuite)
+add_test(NAME TestTestGroup COMMAND TestTestGroup)

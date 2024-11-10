@@ -7,89 +7,89 @@
 
 #include "Logger.hpp"
 #include "MockTestCase.hpp"
-#include "TestSuite.hpp"
+#include "TestGroup.hpp"
 
-TEST_GROUP (TestSuiteTest)
+TEST_GROUP (TestGroupTest)
 {
     void setup() override
     {
-        m_suite = std::make_unique<TestSuite>();
+        m_suite = std::make_unique<TestGroup>();
         Logger::getInstance().disableFileOutput();
     }
 
-    std::unique_ptr<TestSuite>& getTestSuite()
+    std::unique_ptr<TestGroup>& getTestGroup()
     {
         return m_suite;
     }
 
 private:
-    std::unique_ptr<TestSuite> m_suite;
+    std::unique_ptr<TestGroup> m_suite;
 };
 
-TEST (TestSuiteTest, AddTest_ValidTestCase)
+TEST (TestGroupTest, AddTest_ValidTestCase)
 {
     // Arrange
     auto test_case = std::make_unique<MockTestCase>();
 
     // Act
-    getTestSuite()->addTest(std::move(test_case));
+    getTestGroup()->addTest(std::move(test_case));
 
     // Assert
-    getTestSuite()->runAllTests();
-    const auto& results = getTestSuite()->getResults();
+    getTestGroup()->runAllTests();
+    const auto& results = getTestGroup()->getResults();
     CHECK_EQUAL(1, results.size());
 }
 
-TEST (TestSuiteTest, RunAllTests_AllTestsPass)
+TEST (TestGroupTest, RunAllTests_AllTestsPass)
 {
     // Arrange
     auto test1 = std::make_unique<MockTestCase>();
     auto test2 = std::make_unique<MockTestCase>();
 
-    getTestSuite()->addTest(std::move(test1));
-    getTestSuite()->addTest(std::move(test2));
+    getTestGroup()->addTest(std::move(test1));
+    getTestGroup()->addTest(std::move(test2));
 
     // Act
-    getTestSuite()->runAllTests();
+    getTestGroup()->runAllTests();
 
     // Assert
-    const auto& results = getTestSuite()->getResults();
+    const auto& results = getTestGroup()->getResults();
     CHECK_EQUAL(2, results.size());
     CHECK_TRUE(results[0].isSuccess());
     CHECK_TRUE(results[1].isSuccess());
 }
 
-TEST (TestSuiteTest, RunAllTests_TestFails)
+TEST (TestGroupTest, RunAllTests_TestFails)
 {
     // Arrange
     auto test1 = std::make_unique<MockTestCase>();
     auto test2 = std::make_unique<MockTestCase>();
     test2->setExecuteResult(false, "Execution failed");
 
-    getTestSuite()->addTest(std::move(test1));
-    getTestSuite()->addTest(std::move(test2));
+    getTestGroup()->addTest(std::move(test1));
+    getTestGroup()->addTest(std::move(test2));
 
     // Act
-    getTestSuite()->runAllTests();
+    getTestGroup()->runAllTests();
 
     // Assert
-    const auto& results = getTestSuite()->getResults();
+    const auto& results = getTestGroup()->getResults();
     CHECK_EQUAL(2, results.size());
     CHECK_TRUE(results[0].isSuccess());
     CHECK_FALSE(results[1].isSuccess());
     STRCMP_EQUAL("Execution Failed: Execution failed", results[1].getMessage().c_str());
 }
 
-TEST (TestSuiteTest, GetResults_BeforeRunning_ShouldReturnEmptyVector)
+TEST (TestGroupTest, GetResults_BeforeRunning_ShouldReturnEmptyVector)
 {
     // Arrange & Act
-    const auto& results = getTestSuite()->getResults();
+    const auto& results = getTestGroup()->getResults();
 
     // Assert
     CHECK_TRUE(results.empty());
 }
 
-TEST (TestSuiteTest, RunAllTests_MultipleMixedResults_ShouldCollectAllResults)
+TEST (TestGroupTest, RunAllTests_MultipleMixedResults_ShouldCollectAllResults)
 {
     // Arrange
     auto test1 = std::make_unique<MockTestCase>();
@@ -100,35 +100,35 @@ TEST (TestSuiteTest, RunAllTests_MultipleMixedResults_ShouldCollectAllResults)
     test2->setExecuteResult(false, "Execution failed");
     test3->setExecuteResult(true, "");
 
-    getTestSuite()->addTest(std::move(test1));
-    getTestSuite()->addTest(std::move(test2));
-    getTestSuite()->addTest(std::move(test3));
+    getTestGroup()->addTest(std::move(test1));
+    getTestGroup()->addTest(std::move(test2));
+    getTestGroup()->addTest(std::move(test3));
 
     // Act
-    getTestSuite()->runAllTests();
+    getTestGroup()->runAllTests();
 
     // Assert
-    const auto& results = getTestSuite()->getResults();
+    const auto& results = getTestGroup()->getResults();
     CHECK_EQUAL(3, results.size());
     CHECK_TRUE(results[0].isSuccess());
     CHECK_FALSE(results[1].isSuccess());
     CHECK_TRUE(results[2].isSuccess());
 }
 
-TEST (TestSuiteTest, RunAllTests_NoTestsAdded_ShouldDoNothing)
+TEST (TestGroupTest, RunAllTests_NoTestsAdded_ShouldDoNothing)
 {
     // Arrange
     // No tests added to the suite
 
     // Act
-    getTestSuite()->runAllTests();
+    getTestGroup()->runAllTests();
 
     // Assert
-    const auto& results = getTestSuite()->getResults();
+    const auto& results = getTestGroup()->getResults();
     CHECK_EQUAL(0, results.size());
 }
 
-TEST (TestSuiteTest, AddTest_MultipleValidTestCases)
+TEST (TestGroupTest, AddTest_MultipleValidTestCases)
 {
     // Arrange
     auto test1 = std::make_unique<MockTestCase>();
@@ -136,29 +136,29 @@ TEST (TestSuiteTest, AddTest_MultipleValidTestCases)
     auto test3 = std::make_unique<MockTestCase>();
 
     // Act
-    getTestSuite()->addTest(std::move(test1));
-    getTestSuite()->addTest(std::move(test2));
-    getTestSuite()->addTest(std::move(test3));
+    getTestGroup()->addTest(std::move(test1));
+    getTestGroup()->addTest(std::move(test2));
+    getTestGroup()->addTest(std::move(test3));
 
     // Assert
-    getTestSuite()->runAllTests();
-    const auto& results = getTestSuite()->getResults();
+    getTestGroup()->runAllTests();
+    const auto& results = getTestGroup()->getResults();
     CHECK_EQUAL(3, results.size());
 }
 
-TEST (TestSuiteTest, RunAllTests_TestsWithTeardownFailure)
+TEST (TestGroupTest, RunAllTests_TestsWithTeardownFailure)
 {
     // Arrange
     auto test1 = std::make_unique<MockTestCase>();
     test1->setTeardownResult(false, "Teardown failed");
 
-    getTestSuite()->addTest(std::move(test1));
+    getTestGroup()->addTest(std::move(test1));
 
     // Act
-    getTestSuite()->runAllTests();
+    getTestGroup()->runAllTests();
 
     // Assert
-    const auto& results = getTestSuite()->getResults();
+    const auto& results = getTestGroup()->getResults();
     CHECK_EQUAL(1, results.size());
     CHECK_TRUE(results[0].isSuccess());
 }

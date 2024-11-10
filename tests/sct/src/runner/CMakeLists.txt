@@ -9,17 +9,17 @@ target_include_directories(TestCaseResult PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(TestCaseResult PUBLIC Logger)
 
-# TestSuite
+# TestGroup
 add_library(
-    TestSuite
+    TestGroup
     STATIC
-    TestSuite.cpp
+    TestGroup.cpp
 )
 
-target_include_directories(TestSuite PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(TestGroup PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(
-    TestSuite
+    TestGroup
     PUBLIC TestCaseResult
            Logger
            TestCase

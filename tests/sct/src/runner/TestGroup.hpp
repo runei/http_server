@@ -6,7 +6,7 @@
 #include "TestCase.hpp"
 #include "TestCaseResult.hpp"
 
-class TestSuite
+class TestGroup
 {
 public:
     void                                      addTest(std::unique_ptr<TestCase> test_case);

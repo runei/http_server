@@ -1,4 +1,4 @@
-#include "TestSuite.hpp"
+#include "TestGroup.hpp"
 
 #include <memory>
 #include <utility>
@@ -8,7 +8,7 @@
 #include "TestCase.hpp"
 #include "TestCaseResult.hpp"
 
-void TestSuite::addTest(std::unique_ptr<TestCase> test_case)
+void TestGroup::addTest(std::unique_ptr<TestCase> test_case)
 {
     if (!test_case)
     {
@@ -19,7 +19,7 @@ void TestSuite::addTest(std::unique_ptr<TestCase> test_case)
     m_test_cases.emplace_back(std::move(test_case));
 }
 
-void TestSuite::runAllTests()
+void TestGroup::runAllTests()
 {
     m_test_results.clear();
 
@@ -32,7 +32,7 @@ void TestSuite::runAllTests()
     }
 }
 
-std::vector<TestCaseResult> TestSuite::getResults() const
+std::vector<TestCaseResult> TestGroup::getResults() const
 {
     return m_test_results;
 }
