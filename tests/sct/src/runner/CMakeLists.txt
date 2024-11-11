@@ -24,3 +24,19 @@ target_link_libraries(
            Logger
            TestCase
 )
+
+# TestRunner
+add_library(
+    TestRunner
+    STATIC
+    TestRunner.cpp
+)
+
+target_include_directories(TestRunner PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_link_libraries(
+    TestRunner
+    PUBLIC TestCaseResult
+           Logger
+           TestGroup
+)
