@@ -7,26 +7,33 @@
 
 void TestCase::run()
 {
-    auto        start_time = std::chrono::steady_clock::now();
-    std::string error_message;
+    auto start_time = std::chrono::steady_clock::now();
 
-    if (!setup(error_message))
+    auto setup_result = setup();
+
+    if (setup_result)
     {
-        recordFailure("Setup Failed: " + error_message);
-    }
-    else if (!execute(error_message))
-    {
-        recordFailure("Execution Failed: " + error_message);
+        recordFailure("Setup Failed: " + setup_result.value());
     }
     else
     {
-        recordSuccess("");
+        auto execute_result = execute();
+        if (execute_result)
+        {
+            recordFailure("Execution Failed: " + execute_result.value());
+        }
+        else
+        {
+            recordSuccess("");
+        }
     }
 
-    if (!teardown(error_message))
+    auto teardown_result = teardown();
+
+    if (teardown_result)
     {
         // Even if teardown fails, the test still passes
-        Logger::getInstance().logError("Teardown Failed: " + error_message);
+        Logger::getInstance().logError("Teardown Failed: " + teardown_result.value());
     }
 
     auto end_time = std::chrono::steady_clock::now();

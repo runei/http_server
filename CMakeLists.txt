@@ -36,9 +36,10 @@ endif()
 # Option to build system tests
 option(BUILD_SCT "Build system tests" OFF)
 
-if(NOT BUILD_SCT)
-    add_subdirectory(src)
-    add_subdirectory(tests/ut)
-else()
+
+add_subdirectory(src)
+add_subdirectory(tests/ut)
+
+if(BUILD_SCT)
     add_subdirectory(tests/sct)
 endif()

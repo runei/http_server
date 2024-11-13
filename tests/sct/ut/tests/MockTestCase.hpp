@@ -1,7 +1,9 @@
 #pragma once
 
+#include <optional>
 #include <string>
 
+#include "Definitions.hpp"
 #include "TestCase.hpp"
 
 class MockTestCase : public TestCase
@@ -26,15 +28,15 @@ public:
     [[nodiscard]] bool wasTeardownCalled() const;
 
 protected:
-    bool setup(std::string& error_message) override;
-    bool execute(std::string& error_message) override;
-    bool teardown(std::string& error_message) override;
+    OptionalErrorMessage setup() override;
+    OptionalErrorMessage execute() override;
+    OptionalErrorMessage teardown() override;
 
 private:
     // Mock behaviors
-    bool m_setup_result{true};
-    bool m_execute_result{true};
-    bool m_teardown_result{true};
+    OptionalErrorMessage m_setup_result{std::nullopt};
+    OptionalErrorMessage m_execute_result{std::nullopt};
+    OptionalErrorMessage m_teardown_result{std::nullopt};
 
     std::string m_setup_error_message;
     std::string m_execute_error_message;

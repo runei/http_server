@@ -74,7 +74,7 @@ run:
 # Run tests
 test:
 	@if [ -n "$(FILE)" ]; then \
-		TEST_PATH=$$(find $(CMAKE_BUILD_DIR)/tests/ut -name $(FILE)); \
+		TEST_PATH=$$(find $(CMAKE_BUILD_DIR)/tests/ -name $(FILE)); \
 		if [ -z "$$TEST_PATH" ]; then \
 			echo "Test executable $(FILE) not found"; \
 			exit 1; \

@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "Definitions.hpp"
 #include "TestCaseResult.hpp"
 
 class TestCase
@@ -20,9 +21,9 @@ protected:
     TestCase(TestCase&&)                 = default;
     TestCase& operator=(TestCase&&)      = default;
 
-    virtual bool setup(std::string& error_message)    = 0;
-    virtual bool execute(std::string& error_message)  = 0;
-    virtual bool teardown(std::string& error_message) = 0;
+    virtual OptionalErrorMessage setup()    = 0;
+    virtual OptionalErrorMessage execute()  = 0;
+    virtual OptionalErrorMessage teardown() = 0;
 
 private:
     void recordSuccess(const std::string& message);
