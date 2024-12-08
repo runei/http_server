@@ -29,7 +29,7 @@ build:
 	@echo "Running CMake with build type: $(BUILD_TYPE)"
 	@cd $(CMAKE_BUILD_DIR) && cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -DBUILD_SCT=$(BUILD_SCT) $(CMAKE_SOURCE_DIR) || { echo 'CMake failed'; exit 1; }
 	@echo "Building project"
-	@cd $(CMAKE_BUILD_DIR) && $(MAKE) || { echo 'Build failed'; exit 1; }
+	@cd $(CMAKE_BUILD_DIR) && $(MAKE) -j4 || { echo 'Build failed'; exit 1; }
 
 build-sct: BUILD_SCT=ON
 build-sct: build

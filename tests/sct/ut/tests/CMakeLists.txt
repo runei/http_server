@@ -26,3 +26,20 @@ target_link_libraries(
 )
 
 add_test(NAME TestTestCase COMMAND TestTestCase)
+
+# TestServerTestCase
+add_executable(
+    TestServerTestCase
+    TestServerTestCase.cpp
+    ${CMAKE_TEST_MAIN}
+)
+
+target_link_libraries(
+    TestServerTestCase
+    PRIVATE ServerTestCase
+            Logger
+            CppUTest
+            CppUTestExt
+)
+
+add_test(NAME TestServerTestCase COMMAND TestServerTestCase)

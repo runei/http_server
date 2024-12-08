@@ -14,8 +14,18 @@ target_link_libraries(
            Logger
 )
 
-# ServerTestCase add_library( ServerTestCase STATIC ServerTestCase.cpp )
+# ServerTestCase
+add_library(
+    ServerTestCase
+    STATIC
+    ServerTestCase.cpp
+)
 
-# target_include_directories(ServerTestCase PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(ServerTestCase PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-# target_link_libraries( ServerTestCase PUBLIC Server TestCase Logger )
+target_link_libraries(
+    ServerTestCase
+    PUBLIC Server
+           TestCase
+           Logger
+)
